@@ -1,0 +1,61 @@
+.Content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-row-gap: 3rem;
+  text-align: center;
+
+  background-color: rgba(245, 245, 245, 0.85);
+  padding: 5rem;
+  border-radius: 5px;
+  width: 40vw;
+}
+
+.ImgContainer {
+  height: 5rem;
+  width: 5rem;
+  cursor: pointer;
+}
+
+.Img {
+  height: 100%;
+  width: 100%;
+}
+
+.TextPrimary {
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.TextSecondary {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.TextSub {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.Form {
+  display: grid;
+  grid-row-gap: 2rem;
+  justify-self: stretch;
+}
+
+.ButtonContainer {
+  justify-self: stretch;
+  display: grid;
+}
+
+.LinkContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 1rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+}

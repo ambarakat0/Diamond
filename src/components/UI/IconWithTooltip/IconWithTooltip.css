@@ -1,0 +1,53 @@
+/** @format */
+
+.Tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.Tooltip .Tooltiptext {
+	visibility: hidden;
+	font-size: 1rem;
+	width: 6rem;
+	background-color: var(--dark-grey);
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+
+	position: absolute;
+	z-index: 1;
+	bottom: 120%;
+	left: 50%;
+	margin-left: -30px;
+}
+
+.Tooltip .Tooltiptext::after {
+	content: ' ';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -20px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: var(--dark-grey) transparent transparent transparent;
+}
+
+.Tooltip:hover .Tooltiptext {
+	visibility: visible;
+}
+
+.IcContainer {
+	margin-right: 1rem;
+	padding: 1rem;
+	border-radius: 9999px;
+	cursor: pointer;
+}
+
+.activeContainer {
+	background: rgb(230, 230, 230);
+}
+
+.Ic {
+	fill: var(--primary-color);
+}

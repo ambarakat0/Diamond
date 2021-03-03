@@ -1,0 +1,28 @@
+.Button  {
+    padding: 0.5rem 1rem;
+    outline: none;
+    border: none;
+    background-color: var(--dark-grey);
+    border-radius: 4px;
+    color: #fff;
+    transition: all 0.2s;
+    font-size: 1.2rem;
+}
+
+.Button:hover {
+    background-color: var(--primary);
+}
+
+.Active {
+    padding: 0.5rem 1rem;
+    outline: none;
+    border: none;
+    background-color: var(--primary);
+    border-radius: 4px;
+    color: #fff;
+    transition: all 0.2s;
+}
+
+.Active:hover {
+    background-color: var(--dark-grey);
+}

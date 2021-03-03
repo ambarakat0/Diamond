@@ -1,0 +1,58 @@
+.Container {
+  text-align: center;
+  position: relative;
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6)
+    ),
+    url(../../assets/images/heroBg.jpg);
+  background-repeat: no-repeat;
+  font-size: 5rem;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+.Content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-row-gap: 5rem;
+
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 5rem;
+  border-radius: 5px;
+  width: 40vw;
+}
+
+.ImgContainer {
+  height: 5rem;
+  width: 5rem;
+}
+
+.Img {
+  height: 100%;
+  width: 100%;
+}
+
+.TextPrimary {
+  font-size: 5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.TextSecondary {
+  font-size: 3rem;
+  font-weight: 400;
+}
+
+.ButtonContainer {
+  display: grid;
+  grid-row-gap: 2rem;
+  justify-self: stretch;
+}

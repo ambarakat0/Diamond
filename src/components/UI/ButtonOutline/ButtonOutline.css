@@ -1,0 +1,16 @@
+/** @format */
+
+.ButtonOutline {
+	display: block;
+	color: var(--primary-color);
+	border-radius: 9999px;
+	padding: 1rem;
+	font-size: 2rem;
+	border: 1px solid var(--primary-color);
+	transition: all 0.2s;
+}
+
+.ButtonOutline:hover {
+	background-color: var(--primary-color);
+	color: #fff;
+}

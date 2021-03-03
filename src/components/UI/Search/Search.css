@@ -1,0 +1,23 @@
+/** @format */
+
+.Search {
+	display: flex;
+	align-items: center;
+	border: 2px solid var(--primary-color);
+	border-radius: 50px;
+	padding: 0 1rem;
+}
+
+.Search input {
+	background-color: transparent;
+	font-size: 1.5rem;
+}
+
+.Search svg {
+	fill: var(--primary-color);
+	cursor: pointer;
+}
+
+.containerClassSvg:hover {
+	background-color: transparent;
+}

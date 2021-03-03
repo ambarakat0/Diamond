@@ -1,0 +1,51 @@
+/** @format */
+
+.Container {
+	max-width: 150rem;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-column-gap: 2rem;
+	padding: 2rem 0;
+	margin: 2rem auto;
+	position: relative;
+	/* background-color: rgba(235, 235, 235, 0.39); */
+}
+
+.TagContainer {
+	display: flex;
+	justify-content: center;
+}
+
+.IcContainer {
+	margin-right: 1rem;
+	margin-top: -0.5rem;
+	padding: 0.5rem 1rem;
+	border-radius: 9999px;
+}
+
+.IcContainer:hover {
+	background-color: transparent;
+}
+
+.Icon {
+	fill: rgb(29, 161, 242);
+	cursor: default;
+}
+
+.Tag {
+	display: flex;
+	padding-bottom: 1rem;
+}
+
+.Text {
+	font-size: 3rem;
+}
+
+.Main {
+	grid-column: 3/8;
+}
+
+.OpenAddPost {
+	text-align: center;
+}

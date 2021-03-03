@@ -1,0 +1,36 @@
+/** @format */
+
+.NavItem {
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 2rem;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.NavItem a {
+	text-decoration: none;
+	margin-left: 2rem;
+	color: rgb(43, 43, 43);
+	transition: all 0.2s;
+	font-weight: 400;
+}
+
+.NavItem svg {
+}
+
+.NavItem:hover,
+.active {
+	background: rgb(230, 230, 230);
+	border-radius: 9999px;
+}
+
+.NavItem:hover a,
+.active a {
+	color: var(--primary-color);
+}
+
+.NavItem:hover svg,
+.active svg {
+	fill: var(--primary-color);
+}

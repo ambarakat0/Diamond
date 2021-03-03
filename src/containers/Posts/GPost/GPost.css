@@ -1,0 +1,179 @@
+/** @format */
+
+.Container {
+	display: grid;
+	grid-row-gap: 0.5rem;
+	padding: 1.5rem;
+	border-radius: 5px;
+	background-color: var(--bg);
+	margin-bottom: 1rem;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+.Container:hover {
+	background-color: var(--dark-bg);
+}
+
+.Img {
+	height: 5rem;
+	width: 5rem;
+	border-radius: 9999px;
+	margin-right: 1rem;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.Img:hover {
+	filter: brightness(0.8);
+}
+
+.First,
+.Second,
+.Fourth,
+.TagsContainer,
+.UserData {
+	display: flex;
+	align-items: center;
+}
+
+.TagsContainer {
+	margin-right: auto;
+}
+
+.Tag {
+	padding: 0.25rem 0.5rem;
+	margin-right: 0.5rem;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	background-color: var(--vlight-grey);
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.Tag:hover,
+.IconContainer:hover {
+	background-color: var(--light-grey);
+}
+
+.TagText {
+	font-size: 1.2rem;
+	font-weight: 300;
+	margin-left: 0.5rem;
+	margin-top: 0.5rem;
+	text-align: center;
+}
+
+.Icon {
+	fill: var(--primary-color);
+	height: 1.5rem;
+	width: 1.5rem;
+}
+
+.UserData {
+	display: flex;
+	margin-right: auto;
+	cursor: pointer;
+}
+
+.UserName {
+	font-size: 1.8rem;
+	font-weight: 500;
+}
+.AccountName {
+	cursor: pointer;
+	font-size: 1.4rem;
+	color: var(--light-grey);
+}
+
+.Data {
+	display: flex;
+}
+
+.DataText {
+	margin-right: 2rem;
+	cursor: pointer;
+	transition: all 0.2s;
+	font-size: 1.6rem;
+	color: var(--dark-grey);
+}
+
+/* .More {
+    position: absolute;
+    margin-top: -100%;
+} */
+
+.DataText:hover {
+	color: var(--primary-color);
+}
+
+.Text {
+	font-size: 1.7rem;
+}
+
+.Fourth {
+	justify-content: space-between;
+}
+
+.ReactIcon {
+	display: flex;
+	align-items: center;
+}
+
+.ReactText {
+	font-size: 1.3rem;
+	margin-left: -0.8rem;
+	margin-bottom: -0.5rem;
+	transition: all 0.2s;
+	color: var(--dark-grey);
+}
+
+.Third {
+}
+
+.Media {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+}
+
+.ImgContentContainer {
+	height: 60%;
+	width: 100%;
+	border-radius: 5px;
+	overflow: hidden;
+	cursor: pointer;
+	transition: all 0.2s;
+	border: 2px solid var(--primary-color);
+}
+
+.ImgContentContainer:hover {
+	filter: brightness(0.8);
+	transform: scale(0.98);
+	border: 2px solid var(--primary-color-dark);
+}
+
+.ImgContent {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.Video {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	transition: all 0.2s;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.VideoContent {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.Comment button {
+	width: 40%;
+	margin: 0 auto;
+}

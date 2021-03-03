@@ -1,0 +1,17 @@
+/** @format */
+
+.TextArea {
+	width: 100%;
+	outline: none;
+	resize: none;
+	border-radius: 5px;
+	overflow: 'hidden';
+	border: none;
+	padding: 1rem 2rem;
+	color: var(--dark-grey);
+	font-size: 1.4rem;
+}
+
+.TextArea::placeholder {
+	color: var(--light-grey);
+}

@@ -1,0 +1,68 @@
+/** @format */
+.Container {
+	display: grid;
+	grid-row-gap: 0.5rem;
+	background-color: var(--bg);
+	border-radius: 5px;
+}
+
+.Header {
+	text-align: center;
+	margin-top: 1rem;
+}
+
+.SingleFollow {
+	cursor: pointer;
+	background-color: var(--bg);
+	padding: 1rem;
+}
+
+.SingleFollow:hover {
+	background-color: var(--dark-bg);
+}
+
+.FollowDetails {
+	display: flex;
+	align-items: center;
+}
+
+.Img {
+	height: 5rem;
+	width: 5rem;
+	border-radius: 50%;
+	margin-right: 0.5rem;
+	transition: all 0.2s;
+}
+
+.Img:hover {
+	filter: brightness(0.8);
+}
+
+.UserName H4 {
+	font-size: 1.8rem;
+	transition: all 0.2s;
+}
+
+.UserName H4:hover {
+	color: var(--primary-color);
+}
+
+.UserName p {
+	font-size: 1.4rem;
+	color: var(--dark-grey);
+	line-height: 1;
+	transition: all 0.2s;
+}
+
+.UserName p:hover {
+	color: var(--primary-color);
+}
+
+.FollowDetails button {
+	width: 30%;
+	height: 10%;
+	padding: 0.5rem;
+	font-size: 1.4rem;
+	margin-left: auto;
+	cursor: pointer;
+}

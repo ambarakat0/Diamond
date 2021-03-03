@@ -1,0 +1,16 @@
+.Ic {
+    animation: rotate infinite ease-in-out 1.5s;
+    fill: var(--primary-color);
+}
+.Added:hover {
+    background-color: transparent;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

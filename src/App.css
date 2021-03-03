@@ -1,0 +1,86 @@
+/**
+ *
+ * @format
+ */
+
+:root {
+	--primary-color: rgb(29, 161, 242);
+	--primary-color-dark: rgb(20, 145, 223);
+	--dark-grey: rgb(116, 116, 116);
+	--light-grey: rgb(189, 189, 189);
+	--vlight-grey: rgb(230, 230, 230);
+	--bg: rgba(243, 243, 243, 0.747);
+	--dark-bg: rgba(236, 236, 236, 0.747);
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 200;
+	font-display: optional;
+	src: url('./assets/Fonts/Roboto-Light-webfont.woff') format('woff2');
+	ascent-override: 73%;
+	descent-override: 25%;
+	line-gap-override: 2%;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 300;
+	font-display: optional;
+	src: url('./assets/Fonts/Roboto-Regular-webfont.woff') format('woff2');
+	ascent-override: 73%;
+	descent-override: 25%;
+	line-gap-override: 2%;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	font-display: optional;
+	src: url('./assets/Fonts/Roboto-Medium-webfont.woff') format('woff2');
+	ascent-override: 73%;
+	descent-override: 25%;
+	line-gap-override: 2%;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 500;
+	font-display: optional;
+	src: url('./assets/Fonts/Roboto-Bold-webfont.woff') format('woff2');
+	ascent-override: 73%;
+	descent-override: 25%;
+	line-gap-override: 2%;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+html {
+	font-size: 62.5%;
+	box-sizing: border-box;
+}
+
+p {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-size: 2rem;
+	line-height: 1.6;
+}

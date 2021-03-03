@@ -1,0 +1,18 @@
+/** @format */
+
+.IconContainer {
+	display: flex;
+	align-items: center;
+}
+
+.IconContainer:hover {
+	background-color: var(--vlight-grey);
+	transition: all 0.2s;
+}
+
+.Icon {
+	height: 2rem;
+	width: 2rem;
+	fill: rgb(88, 88, 88);
+	transition: all 0.2s;
+}

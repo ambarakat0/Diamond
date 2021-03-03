@@ -1,0 +1,15 @@
+/** @format */
+
+.Button {
+	background-color: transparent;
+	outline: none;
+	border: none;
+	color: var(--dark-grey);
+	font-size: 1.5rem;
+	transition: all 0.2s;
+	cursor: pointer;
+}
+
+.Button:hover {
+	color: var(--primary-color);
+}

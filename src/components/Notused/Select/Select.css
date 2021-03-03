@@ -1,0 +1,24 @@
+.Select {
+    padding: 1rem 1.5rem;
+    outline: none;
+    background-color: transparent;
+    border: none;
+    color: rgb(3, 136, 219);
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.Select:hover,
+.Select:focus {
+    background: rgb(230, 230, 230);
+    border-radius: 9999px;
+}
+
+.Option {
+    margin-bottom: 1rem; 
+    border: none;
+    outline: none;
+    background-color: #fff;
+}
