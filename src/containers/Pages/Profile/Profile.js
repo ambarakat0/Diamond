@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import classes from './Profile.css';
 
 import Nav from '../../../components/Nav/Nav';
-import GPost from '../../Posts/GPost/GPost';
+// import GPost from '../../Posts/GPost/GPost';
 
 import noProfilePic from '../../../assets/images/noprofilepic.png';
 import defCover from '../../../assets/images/defCover.jpg';
@@ -14,24 +14,24 @@ import defCover from '../../../assets/images/defCover.jpg';
 import firebase from '../../../components/Firebase/Firebase';
 import Icon from '../../../components/UI/Icon/Icon';
 import ButtonOutline from '../../../components/UI/ButtonOutline/ButtonOutline';
+import Button from '../../../components/UI/Button/Button';
 
 import { authStateContext } from '../../../Global/TrackAuthState';
 
-import { uploadData, fetchUserData } from '../../../Shared/utility';
+import { uploadData, fetchUserData } from '../../../Shared/handleData';
 
 const profile = (props) => {
 	const user = useContext(authStateContext).initState;
-
+	// const uid = props.match.param.id;
 	//-------Fetched data from server-----------/////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	const [ImgCover, setImgCover] = useState(defCover);
 	const [ImgPro, setImgPro] = useState(noProfilePic);
 	const [userData, setUserData] = useState(null);
-
+	const [login, setLogin] = useState(false);
+	const [signup, setSignup] = useState(false);
 	useEffect(() => {
-		if (user) {
-			fetchUserData(user, setUserData);
-		}
+		fetchUserData(user, setUserData);
 	}, [user]);
 
 	useEffect(() => {
@@ -64,12 +64,36 @@ const profile = (props) => {
 		setImgCover(e.target.files[0]);
 	};
 
-	if (!user) {
-		return <Redirect to='/' />;
+	let redirect = null;
+	const onLoginHandler = () => {
+		setLogin(true);
+	};
+	const onSignUpHandler = () => {
+		setSignup(true);
+	};
+
+	if (login) {
+		redirect = <Redirect to='/login' />;
 	}
+	if (signup) {
+		redirect = <Redirect to='/signup' />;
+	}
+
 	if (!userData) {
-		return null;
+		return (
+			<Fragment>
+				{redirect}
+				<div className={classes.PopupContainer}>
+					<p className={classes.PopupText}>{props.text}</p>
+					<div className={classes.PopupBtnsContainer}>
+						<Button clicked={onLoginHandler}>login</Button>
+						<Button clicked={onSignUpHandler}>signUp</Button>
+					</div>
+				</div>
+			</Fragment>
+		);
 	}
+
 	return (
 		<div className={classes.Container}>
 			<Nav />

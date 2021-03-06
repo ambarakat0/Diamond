@@ -1,52 +1,68 @@
 /** @format */
 
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 
 import SingleTagPage from '../../../components/SingleTagPage/SingleTagPage';
 import GPost from '../../Posts/GPost/GPost';
-import { fetchData } from '../../../Shared/utility';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import { fetchData } from '../../../Shared/handleData';
 
 // import { Gposts } from '../../../Data/GPostData';
-import { Redirect } from 'react-router-dom';
+
+import { authStateContext } from '../../../Global/TrackAuthState';
+// import { Redirect } from 'react-router-dom';
 
 const home = (props) => {
-	const [data, setData] = useState([]);
-	const [auth, setAuth] = useState(true);
-
+	const user = useContext(authStateContext).initState;
+	const [data, setData] = useState(null);
+	// const [auth, setAuth] = useState(true);
 	useEffect(() => {
 		let arr = [];
-		fetchData(arr, setData, setAuth);
-	}, [fetchData]);
+		fetchData(arr, setData);
+	}, [fetchData, user]);
 
-	const posts = data.map((post) => (
-		<GPost
-			key={`${post.NickName}-${Math.random(20000)}`}
-			name={post.Name}
-			nickname={post.NickName}
-			text={post.Text}
-			time={post.Time}
-			tags={post.Tags}
-			img={post.Img}
-			video={post.Video}
-			imgC={post.ImgContent}
-			share={post.Share}
-			comment={post.Comment}
-			like={post.Like}
-			public={post.Public}
-		/>
-	));
-
-	let direct = null;
-	if (!auth) {
-		direct = <Redirect to='/' />;
+	if (data) {
+		const posts = data.map((post) => (
+			<GPost
+				key={`${post.NickName}-${Math.random(20000)}`}
+				name={post.Name}
+				nickname={post.NickName}
+				text={post.Text}
+				time={post.Time}
+				tags={post.Tags}
+				img={post.Img}
+				video={post.Video}
+				imgC={post.ImgContent}
+				share={post.Share.length}
+				comment={post.Comment.length}
+				like={post.Like.length}
+				public={post.Public}
+				ownerId={post.UserId}
+			/>
+		));
+		return (
+			<Fragment>
+				{/* {direct} */}
+				<SingleTagPage name='Home' posts={posts} />;
+			</Fragment>
+		);
+	} else {
+		let spinner = (
+			<div style={{ textAlign: 'center' }}>
+				<Spinner />
+			</div>
+		);
+		return (
+			<Fragment>
+				<SingleTagPage name='Home' posts={spinner} />;
+			</Fragment>
+		);
 	}
 
-	return (
-		<Fragment>
-			{direct}
-			<SingleTagPage name='Home' posts={posts} />;
-		</Fragment>
-	);
+	// let direct = null;
+	// if (!user) {
+	// 	return (direct = <Redirect to='/' />);
+	// }
 };
 
 export default home;

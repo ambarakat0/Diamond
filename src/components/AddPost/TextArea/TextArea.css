@@ -7,9 +7,9 @@
 	border-radius: 5px;
 	overflow: 'hidden';
 	border: none;
-	padding: 1rem 2rem;
+	padding: 1.5rem 2rem;
 	color: var(--dark-grey);
-	font-size: 1.4rem;
+	font-size: 1.8rem;
 }
 
 .TextArea::placeholder {

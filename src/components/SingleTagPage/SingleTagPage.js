@@ -6,6 +6,7 @@ import Nav from '../Nav/Nav';
 import AddPost from '../../containers/AddPost/AddPost';
 import Icon from '../UI/Icon/Icon';
 import SideBar from '../SideBar/SideBar';
+import Tags from '../TagsContainer/TagsContainer';
 
 import { title } from '../../Shared/utility';
 
@@ -24,22 +25,27 @@ const tagPage = (props) => {
 
 	return (
 		<div className={classes.Container}>
-			<Nav clicked={onClickHandler} />
-			<div className={classes.Main} ref={topRef}>
-				<div className={classes.TagContainer}>
-					<div className={classes.Tag}>
-						<Icon
-							containerClass={classes.IcContainer}
-							classes={classes.Icon}
-							iconname='price-tag'
-						/>
-						<h2 className={classes.Text}>{name}</h2>
-					</div>
-				</div>
-				<AddPost />
-				{props.posts}
+			<div className={classes.Tags}>
+				<Tags />
 			</div>
-			<SideBar />
+			<div className={classes.All}>
+				<Nav clicked={onClickHandler} />
+				<div className={classes.Main} ref={topRef}>
+					<div className={classes.TagContainer}>
+						<div className={classes.Tag}>
+							<Icon
+								containerClass={classes.IcContainer}
+								classes={classes.Icon}
+								iconname='price-tag'
+							/>
+							<h2 className={classes.Text}>{name}</h2>
+						</div>
+					</div>
+					<AddPost />
+					{props.posts}
+				</div>
+				<SideBar />
+			</div>
 		</div>
 	);
 };

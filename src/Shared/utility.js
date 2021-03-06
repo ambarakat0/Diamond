@@ -11,6 +11,33 @@ export const updateObject = (oldObject, updatedProperties) => {
 	};
 };
 
+export const checkValidity = (value, rules) => {
+	let isValid = true;
+
+	if (!rules) {
+		return true;
+	}
+	if (rules.required) {
+		isValid = value.trim() !== '' && isValid;
+	}
+	if (rules.minLength) {
+		isValid = value.length >= rules.minLength && isValid;
+	}
+	if (rules.maxLength) {
+		isValid = value.length <= rules.maxLength && isValid;
+	}
+	if (rules.isEmail) {
+		const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+		isValid = pattern.test(value) && isValid;
+	}
+
+	if (rules.isNumeric) {
+		const pattern = /^\d+$/;
+		isValid = pattern.test(value) && isValid;
+	}
+	return isValid;
+};
+
 export const tagsArr = [
 	'world',
 	'sport',
@@ -36,6 +63,34 @@ export const filterPosts = (posts, tag) => {
 	});
 
 	return filteredPosts;
+};
+
+export const timeDiffCalc = (last) => {
+	const now = new Date();
+	let diffInMilliSeconds = Math.abs(now - last) / 1000;
+
+	// calculate days
+	const days = Math.floor(diffInMilliSeconds / 86400);
+	diffInMilliSeconds -= days * 86400;
+
+	// calculate hours
+	const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+	diffInMilliSeconds -= hours * 3600;
+
+	// calculate minutes
+	const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+	diffInMilliSeconds -= minutes * 60;
+
+	let difference = '';
+	if (days > 0) difference += days === 1 ? `${days} d` : `${days} ds`;
+
+	if (days === 0 && hours >= 1)
+		difference += hours === 0 || hours === 1 ? `${hours} h` : `${hours} hs`;
+	if (days === 0 && minutes >= 1)
+		difference +=
+			minutes === 0 || hours === 1 ? `${minutes} min` : `${minutes} mins`;
+
+	return difference;
 };
 
 ///////////---------------Connection with server -------------//////////
@@ -104,25 +159,24 @@ export const handleAuthError = (m) => {
 	return msg;
 };
 
-export const fetchData = async (arr, setData, setAuth) => {
+export const fetchData = async (arr, setData) => {
 	try {
-		await firebase
+		firebase
 			.firestore()
 			.collection('Posts')
-			.get()
-			.then((snapshot) => {
-				snapshot.docs.forEach((doc) => {
-					arr.push(doc.data());
+			.onSnapshot((snapshot) => {
+				snapshot.docs.forEach(async (doc) => {
+					await arr.push(doc.data());
+					setData(arr.sort((a, b) => b.Time - a.Time));
 				});
 			});
-
-		setData(arr);
 	} catch (err) {
-		setAuth(false);
+		console.log('false');
+		// setAuth(false);
 	}
 };
 
-export const fetchUserData = async (user, setUserData) => {
+export const fetchUserData = async (user, setUserData, setAuth) => {
 	try {
 		const data = new Date(user.metadata.creationTime);
 		const year = data.getFullYear();

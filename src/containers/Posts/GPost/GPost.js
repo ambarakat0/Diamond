@@ -1,31 +1,46 @@
 /** @format */
 
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useContext, useEffect } from 'react';
 import IconWithTooltip from '../../../components/UI/IconWithTooltip/IconWithTooltip';
 import Icon from '../../../components/UI/Icon/Icon';
 import classes from './GPost.css';
 import TextArea from '../../../components/AddPost/TextArea/TextArea';
 import Button from '../../../components/UI/Button/Button';
 import Popup from '../../../components/UI/Popup/Popup';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import { withRouter } from 'react-router-dom';
-// import VideoPlayer from '../../../components/VideoPlayer/VideoPlayer'
+
+import { timeDiffCalc, fetchUserData } from '../../../Shared/utility';
+import {
+	addCommentOrShare,
+	toggleLike,
+	displayLikeStar,
+	share,
+} from '../ReactToPost';
+
+import { authStateContext } from '../../../Global/TrackAuthState';
 
 const gpost = (props) => {
+	const [userData, setUserData] = useState(null);
+
 	const [showComment, setShowComment] = useState(false);
 	const [like, setLike] = useState(false);
 	const [bookmark, setBookmark] = useState(false);
 	const [showPopup, setShowPopup] = useState(false);
 	const [commentContent, setCommentContent] = useState('');
+	const [showSpinner, setShowSpinner] = useState(false);
 
-	// const videoJsOptions = {
-	//     autoplay: true,
-	//     controls: true,
-	//     sources: [{
-	//         src: props.video,
-	//         type: 'video/mp4'
-	//     }]
-	// }
+	const user = useContext(authStateContext).initState;
+
+	useEffect(() => {
+		if (user) {
+			fetchUserData(user, setUserData);
+			displayLikeStar(props.ownerId, user.uid, setLike);
+		}
+	}, [user]);
+
+	const datePassed = timeDiffCalc(new Date(props.time));
 
 	const onCommentHandler = () => {
 		if (!commentContent) setShowComment((prevState) => !prevState);
@@ -46,6 +61,47 @@ const gpost = (props) => {
 		// else props.history.replace(props.link);
 		if (props.location.pathname === '/home') props.history.push(`tags/${id}`);
 		else props.history.push(`${id}`);
+	};
+
+	const onAddComment = async () => {
+		setShowSpinner(true);
+		await addCommentOrShare(props.ownerId, {
+			uid: user.uid,
+			imgPro: userData.imgPro,
+			text: commentContent,
+		});
+		setShowSpinner(false);
+		setCommentContent('');
+	};
+	const onAddLike = () => {
+		toggleLike(props.ownerId, {
+			uid: user.uid,
+			imgPro: userData.imgPro,
+		});
+	};
+	const onAddShare = async () => {
+		setShowSpinner(true);
+		let data = {
+			Time: new Date().getTime(),
+			Name: props.name,
+			Nickname: props.nickname,
+			Text: props.text,
+			Tags: props.tags,
+			Img: props.img,
+			ImgContent: props.imgC,
+			Share: props.share,
+			Comment: props.comment,
+			Like: props.like,
+			Public: props.public,
+			OwnerId: props.ownerId,
+		};
+		console.log(data);
+		await addCommentOrShare(props.ownerId, {
+			uid: user.uid,
+			imgPro: userData.imgPro,
+		});
+		share(user.uid, data);
+		setShowSpinner(false);
 	};
 
 	const tags = props.tags.map((tag) => {
@@ -97,7 +153,13 @@ const gpost = (props) => {
 					placeholder='Comment'
 					changed={(e) => onChangeHandler(e)}
 				/>
-				<Button className={classes.AddCommentBtn}>Reply</Button>
+				<Button
+					clicked={onAddComment}
+					className={classes.AddCommentBtn}
+					disabled={!commentContent}
+				>
+					Reply
+				</Button>
 			</div>
 		);
 	}
@@ -123,6 +185,12 @@ const gpost = (props) => {
 			/>
 		);
 	}
+
+	let spinner = null;
+	if (showSpinner) {
+		spinner = <Spinner />;
+	}
+
 	return (
 		<Fragment>
 			{popup}
@@ -150,7 +218,7 @@ const gpost = (props) => {
 							}}
 						>
 							<h2 className={classes.UserName}>{props.name}</h2>
-							<h3 className={classes.AccountName}>@{props.nickname}</h3>
+							<h3 className={classes.AccountName}>{props.nickname}</h3>
 						</div>
 						<div style={{ display: 'flex', alignItems: 'center' }}>
 							<IconWithTooltip
@@ -164,13 +232,15 @@ const gpost = (props) => {
 						</div>
 					</div>
 					<div className={classes.Data}>
-						<p className={classes.DataText}>{props.time}</p>
+						<p className={classes.DataText}>{datePassed}</p>
 					</div>
 				</div>
 				<div className={classes.Third}>
 					<p className={classes.Text}>{props.text}</p>
-					{ImgContent}
-					{VideoContent}
+					<div className={classes.Media}>
+						{ImgContent}
+						{VideoContent}
+					</div>
 				</div>
 				<div className={classes.Fourth}>
 					<div className={classes.ReactIcon} onClick={onCommentHandler}>
@@ -182,13 +252,18 @@ const gpost = (props) => {
 						<span className={classes.ReactText}>{props.comment}</span>
 					</div>
 					<div className={classes.ReactIcon}>
-						<IconWithTooltip iconName='share2' text='Share' />
+						<IconWithTooltip
+							iconName='share2'
+							text='Share'
+							clicked={onAddShare}
+						/>
 						<span className={classes.ReactText}>{props.share}</span>
 					</div>
 					<div className={classes.ReactIcon} onClick={onLikeHandler}>
 						<IconWithTooltip
 							iconName={like ? 'star-full' : 'star-empty'}
 							text={like ? 'unlike' : 'like'}
+							clicked={onAddLike}
 						/>
 						<span className={classes.ReactText}>{props.like}</span>
 					</div>
@@ -200,6 +275,7 @@ const gpost = (props) => {
 					</div>
 				</div>
 				{comment}
+				{spinner}
 			</div>
 		</Fragment>
 	);

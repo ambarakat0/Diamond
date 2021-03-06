@@ -1,16 +1,19 @@
 /** @format */
 
-import React, { useContext, useState, Fragment } from 'react';
+import React, { useContext, useState, Fragment, useEffect } from 'react';
 import classes from './SignUp.css';
 import Button from '../../components/UI/Button/Button';
 import Logo from '../../assets/images/diamond-logo.png';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-import { updateObject, signUpReq, handleAuthError } from '../../Shared/utility';
+import { updateObject, checkValidity } from '../../Shared/utility';
+import { signUpReq } from '../../Shared/auth';
 
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+
+// import firebase from '../../components/Firebase/Firebase';
 
 import DatePicker from '../../components/UI/DatePicker/DatePicker';
 
@@ -27,12 +30,93 @@ const signup = (props) => {
 
 	const [birthDate, setBirthDate] = useState();
 	const [userData, setUserData] = useState({
-		name: { value: '', type: 'text', placeholder: 'User Name' },
-		displayName: { value: '', type: 'text', placeholder: 'Display Name' },
-		email: { value: '', type: 'email', placeholder: 'Email' },
-		password: { value: '', type: 'password', placeholder: 'Password' },
-		country: { value: '', type: 'text', placeholder: 'Country' },
+		name: {
+			value: '',
+			type: 'text',
+			placeholder: 'User Name',
+			validation: {
+				required: true,
+				minLength: 9,
+			},
+			valid: false,
+			touched: false,
+		},
+		displayName: {
+			value: '',
+			type: 'text',
+			placeholder: 'Display Name',
+			validation: {
+				required: true,
+				minLength: 9,
+			},
+			valid: false,
+			touched: false,
+		},
+		email: {
+			value: '',
+			type: 'email',
+			placeholder: 'Email',
+			validation: {
+				required: true,
+				isEmail: true,
+			},
+			valid: false,
+			touched: false,
+		},
+		password: {
+			value: '',
+			type: 'password',
+			placeholder: 'Password',
+			validation: {
+				required: true,
+				minLength: 9,
+				maxLength: 14,
+			},
+			valid: false,
+			touched: false,
+		},
+		country: {
+			value: '',
+			type: 'text',
+			placeholder: 'Country',
+			validation: {
+				required: true,
+			},
+			valid: false,
+			touched: false,
+		},
 	});
+	const [disable, setDisable] = useState(true);
+
+	useEffect(() => {
+		if (
+			userData.email.valid &&
+			userData.password.valid &&
+			userData.displayName.valid &&
+			userData.name.valid &&
+			userData.country.valid &&
+			birthDate !== undefined
+		) {
+			setDisable(false);
+		}
+		if (
+			!userData.email.valid ||
+			!userData.password.valid ||
+			!userData.displayName.valid ||
+			!userData.name.valid ||
+			!userData.country.valid ||
+			birthDate === undefined
+		) {
+			setDisable(true);
+		}
+	}, [
+		userData.email.valid,
+		userData.password.valid,
+		userData.displayName.valid,
+		userData.name.valid,
+		userData.country.valid,
+		birthDate,
+	]);
 
 	const onChangeDateOfBirth = (e) => {
 		setBirthDate(e.target.value);
@@ -47,6 +131,25 @@ const signup = (props) => {
 			country: userData.country.value,
 			age: birthDate,
 		};
+		console.log(userAuth);
+		// await firebase
+		// 	.firestore()
+		// 	.collection('users')
+		// 	.get()
+		// 	.then((snapshot) =>
+		// 		snapshot.docs.forEach((doc) => {
+		// 			console.log(doc);
+		// 			console.log(doc.data().userName, doc.data().displayName);
+		// 			if (
+		// 				doc.data().userName === userAuth.userName ||
+		// 				doc.data().displayName === userAuth.displayName
+		// 			) {
+		// 				alert('wrong');
+		// 			} else {
+
+		// 			}
+		// 		}),
+		// 	);
 		await signUpReq(userAuth, dispatch);
 	};
 
@@ -58,6 +161,8 @@ const signup = (props) => {
 		const updatedData = updateObject(userData, {
 			[id]: updateObject(userData[id], {
 				value: e.target.value,
+				valid: checkValidity(e.target.value, userData[id].validation),
+				touched: true,
 			}),
 		});
 		setUserData(updatedData);
@@ -77,6 +182,9 @@ const signup = (props) => {
 			type={el.config.type}
 			placeholder={el.config.placeholder}
 			value={el.config.value}
+			touched={el.config.touched}
+			isValid={el.config.valid}
+			shouldValidate={el.config.validation}
 			changed={(e) => onChangeHandler(e, el.id)}
 		/>
 	));
@@ -89,8 +197,7 @@ const signup = (props) => {
 
 	let err = null;
 	if (error) {
-		const msg = handleAuthError(error.message);
-		err = <p style={{ color: 'salmon' }}>{msg}</p>;
+		err = <p style={{ color: 'salmon' }}>{error.message}</p>;
 	}
 
 	let spinner = null;
@@ -128,7 +235,7 @@ const signup = (props) => {
 				/> */}
 				<DatePicker submit={onChangeDateOfBirth} />
 				<div className={classes.ButtonContainer}>
-					<Button type='submit' clicked={onSubmitHandler}>
+					<Button type='submit' clicked={onSubmitHandler} disabled={disable}>
 						Sign Up
 					</Button>
 				</div>

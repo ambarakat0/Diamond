@@ -13,10 +13,10 @@ const logout = (props) => {
 			.auth()
 			.signOut()
 			.then(() => console.log('log out'));
-		// dispatch({
-		// 	type: 'AUTH_LOGOUT',
-		// });
-	});
+		dispatch({
+			type: 'AUTH_LOGOUT',
+		});
+	}, [firebase, dispatch]);
 	return <Redirect to='/login' />;
 };
 

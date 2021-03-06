@@ -60,7 +60,6 @@
 
 .TagContainer h3 {
 	font-size: 1.5rem;
-	margin-top: 0.7rem;
 	color: var(--primary-color);
 }
 
@@ -88,7 +87,6 @@
 .Sub {
 	font-size: 1.5rem;
 	color: var(--dark-grey);
-	line-height: 1;
 }
 
 .ButtonContainer {

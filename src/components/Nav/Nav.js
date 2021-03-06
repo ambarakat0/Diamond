@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom';
 
 const nav = (props) => {
 	const onclickLogo = () => {
-		props.history.push('/');
+		props.history.push('/home');
 	};
 
 	return (

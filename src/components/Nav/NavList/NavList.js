@@ -1,14 +1,17 @@
 /** @format */
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import NavItem from '../NavItem/NavItem';
 import classes from './NavList.css';
 import TagsContainer from '../../TagsContainer/TagsContainer';
 import Icon from '../../../components/UI/Icon/Icon';
 import { withRouter } from 'react-router-dom';
 
+import { authStateContext } from '../../../Global/TrackAuthState';
+
 const navlist = (props) => {
 	const [open, setOpen] = useState(false);
+	const user = useContext(authStateContext).initState;
 
 	const onOpenHandler = () => {
 		setOpen((prevState) => !prevState);
@@ -39,9 +42,15 @@ const navlist = (props) => {
 				<NavItem link='/bookmarks' iconName='pushpin'>
 					Pin
 				</NavItem>
-				<NavItem link='/profile' iconName='user'>
-					Profile
-				</NavItem>
+				{user ? (
+					<NavItem link={`/profile/${user.uid}`} iconName='user'>
+						Profile
+					</NavItem>
+				) : (
+					<NavItem link={`/profile/`} iconName='user'>
+						Profile
+					</NavItem>
+				)}
 				<NavItem link='/settings' iconName='cog'>
 					Settings
 				</NavItem>

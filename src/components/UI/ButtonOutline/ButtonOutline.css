@@ -8,9 +8,14 @@
 	font-size: 2rem;
 	border: 1px solid var(--primary-color);
 	transition: all 0.2s;
+	cursor: pointer;
 }
 
-.ButtonOutline:hover {
+.ButtonOutline:hover,
+.ButtonOutline:active,
+.ButtonOutline:visited,
+.ButtonOutline:focus {
 	background-color: var(--primary-color);
 	color: #fff;
+	outline: none;
 }

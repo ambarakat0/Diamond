@@ -1,21 +1,28 @@
+/** @format */
+
 .Button {
-  display: block;
-  border: none;
-  color: #fff;
-  border-radius: 9999px;
-  padding: 1rem 0;
-  font-size: 2rem;
-  background-color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  transition: all 0.2s;
+	display: block;
+	border: none;
+	color: #fff;
+	border-radius: 9999px;
+	padding: 1rem 0;
+	font-size: 2rem;
+	background-color: var(--primary-color);
+	border: 1px solid var(--primary-color);
+	transition: all 0.2s;
+	cursor: pointer;
 }
 
-.Button:hover {
-  background-color: var(--primary-color-dark);
+.Button:hover,
+.Button:active,
+.Button:visited,
+.Button:focus {
+	outline: none;
+	background-color: var(--primary-color-dark);
 }
 
 .Button:disabled {
-  cursor: not-allowed;
-  background-color: var(--light-grey);
-  border: 1px solid var(--light-grey);
+	cursor: not-allowed;
+	background-color: var(--light-grey);
+	border: 1px solid var(--light-grey);
 }

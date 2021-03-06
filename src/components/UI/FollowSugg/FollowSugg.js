@@ -1,51 +1,78 @@
 /** @format */
 
-import React from 'react';
-import Button from '../ButtonOutline/ButtonOutline';
-import img1 from '../../../assets/DataImgs/user10.jpeg';
-import img2 from '../../../assets/DataImgs/user9.jpg';
-import img3 from '../../../assets/DataImgs/user8.jpg';
+import React, { useContext, useEffect, useState } from 'react';
+import OutlineButton from '../ButtonOutline/ButtonOutline';
+import SolidButton from '../Button/Button';
+import noProfilePic from '../../../assets/images/noprofilepic.png';
 
 import FlatButton from '../FlatButton/FlatButton';
+import Spinner from '../Spinner/Spinner';
 import classes from './FollowSugg.css';
 
+import firebase from '../../../components/Firebase/Firebase';
+
+import { authStateContext } from '../../../Global/TrackAuthState';
+
+import { addFollow } from './Follow';
+
 const follow = (props) => {
-	return (
-		<div className={classes.Container}>
-			<h3 className={classes.Header}>Follow Suggestions</h3>
-			<div className={classes.SingleFollow}>
+	const user = useContext(authStateContext).initState;
+	const [followList, setFollowList] = useState(null);
+	// const [followBtn, setFollowBtn] = useState(false);
+
+	useEffect(() => {
+		if (user) {
+			let arr = [];
+			const asy = async () => {
+				await firebase
+					.firestore()
+					.collection('users')
+					.get()
+					.then((snapshot) =>
+						snapshot.docs.forEach((doc) => {
+							if (doc.id !== user.uid) arr.push(doc.data());
+						}),
+					);
+
+				setFollowList(arr);
+			};
+			asy();
+		}
+	}, [user]);
+
+	// const follow = () => {
+	// 	setFollowBtn((prevState) => !prevState);
+	// 	// addFollow(user.id);
+	// };
+	if (followList) {
+		const followListComp = followList.map((f) => (
+			<div className={classes.SingleFollow} key={f.displayName}>
 				<div className={classes.FollowDetails}>
-					<img src={img1} alt='user' className={classes.Img} />
+					<img
+						src={f.imgProfile || noProfilePic}
+						alt='user'
+						className={classes.Img}
+					/>
 					<div className={classes.UserName}>
-						<h4>Rasha</h4>
-						<p>@Rahahkassam</p>
+						<h4>{f.userName}</h4>
+						<p>{f.displayName}</p>
 					</div>
-					<Button className={classes.Button}>Follow</Button>
+					<OutlineButton className={classes.Button} clicked={follow}>
+						Follow
+					</OutlineButton>
 				</div>
 			</div>
-			<div className={classes.SingleFollow}>
-				<div className={classes.FollowDetails}>
-					<img src={img2} alt='user' className={classes.Img} />
-					<div className={classes.UserName}>
-						<h4>Ahmed</h4>
-						<p>@Ahmedsokar</p>
-					</div>
-					<Button className={classes.Button}>Follow</Button>
-				</div>
+		));
+		return (
+			<div className={classes.Container}>
+				<h3 className={classes.Header}>Follow Suggestions</h3>
+				{followListComp}
+				<FlatButton>See more</FlatButton>
 			</div>
-			<div className={classes.SingleFollow}>
-				<div className={classes.FollowDetails}>
-					<img src={img3} alt='user' className={classes.Img} />
-					<div className={classes.UserName}>
-						<h4>John</h4>
-						<p>@johwshmet</p>
-					</div>
-					<Button className={classes.Button}>Follow</Button>
-				</div>
-			</div>
-			<FlatButton>See more</FlatButton>
-		</div>
-	);
+		);
+	} else {
+		return <Spinner />;
+	}
 };
 
 export default follow;

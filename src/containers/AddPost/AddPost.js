@@ -10,6 +10,8 @@ import IconWithToolTip from '../../components/UI/IconWithTooltip/IconWithTooltip
 import Emoji from '../../components/AddPost/Emoji/Emoji';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
+import noProfilePic from '../../assets/images/noprofilepic.png';
+
 import firebase from '../../components/Firebase/Firebase';
 
 import { authStateContext } from '../../Global/TrackAuthState';
@@ -27,7 +29,7 @@ const home = React.memo((props) => {
 
 	//////----state UI-----////
 	const [toggleAddPostBox, setToggleAddPostBox] = useState(false);
-	const [howCanSee, setHowCanSee] = useState(true);
+	const [whoCanSee, setHowCanSee] = useState(true);
 	const [showEmoji, setShowEmoji] = useState(false);
 	const [showPopup, setShowPopup] = useState(false);
 	const [showSpinner, setShowSpinner] = useState(false);
@@ -66,25 +68,37 @@ const home = React.memo((props) => {
 	///////////---------------Action functions-------------//////////
 	const onPublishHandler = () => {
 		setShowSpinner(true);
+		let p = {
+			Name: userData.name,
+			NickName: userData.displayName,
+			Img: userData.img,
+			Text: postData,
+			Tags: tagArr,
+			Time: new Date().getTime(),
+			Public: whoCanSee,
+			ImgContent: imgContent,
+			UserId: `${user.uid}-${new Date().getTime()}`,
+			Comment: [],
+			Like: [],
+			Share: [],
+		};
 		firebase
 			.firestore()
 			.collection('Posts')
-			.add({
-				Name: userData.name,
-				NickName: userData.displayName,
-				Img: userData.img,
-				Text: postData,
-				Tags: tagArr,
-				Time: '1m',
-				Public: howCanSee,
-				ImgContent: imgContent,
-			})
+			.add(p)
 			.then(() => {
 				setShowSpinner(false);
 				setPostData('');
 				setToggleAddPostBox(false);
 				setImgContent(null);
 			});
+		firebase
+			.firestore()
+			.collection('users')
+			.doc(user.uid)
+			.collection('posts')
+			.add(p)
+			.then(() => {});
 	};
 
 	const onAddTagsHandler = (e) => {
@@ -119,6 +133,7 @@ const home = React.memo((props) => {
 	///////////---------------state functions-------------//////////
 	const uploadInputOnChange = (e) => {
 		setUploadedData(e.target.files[0]);
+		console.log(e.target.files[0]);
 	};
 
 	const onChangeHandler = (e) => {
@@ -233,19 +248,23 @@ const home = React.memo((props) => {
 			<div className={classes.Content}>
 				{spinner}
 				<div className={classes.FirstRow}>
-					<img className={classes.Img} src={userData.img} alt='user' />
+					<img
+						className={classes.Img}
+						src={userData.img || noProfilePic}
+						alt='user'
+					/>
 					<div className={classes.SeeContainer}>
 						<IconWithToolTip
 							text='Every one can reply'
 							iconName='earth'
-							active={howCanSee}
+							active={whoCanSee}
 							clicked={manageSeePublic}
 						/>
 						<IconWithToolTip
 							clicked={manageSeePrivite}
 							text='Only who follow you can reply'
 							iconName='user-plus'
-							active={!howCanSee}
+							active={!whoCanSee}
 						/>
 					</div>
 					{tagContainer}

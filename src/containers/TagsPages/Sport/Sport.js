@@ -17,7 +17,7 @@ const sport = (props) => {
 
 	const posts = filteredPosts.map((post) => (
 		<GPost
-			key={post.NickName}
+			key={`${post.NickName}-${Math.random(20000)}`}
 			name={post.Name}
 			nickname={post.NickName}
 			text={post.Text}
@@ -26,10 +26,11 @@ const sport = (props) => {
 			img={post.Img}
 			video={post.Video}
 			imgC={post.ImgContent}
-			share={post.Share}
-			comment={post.Comment}
-			like={post.Like}
+			share={post.Share.length}
+			comment={post.Comment.length}
+			like={post.Like.length}
 			public={post.Public}
+			ownerId={post.UserId}
 		/>
 	));
 

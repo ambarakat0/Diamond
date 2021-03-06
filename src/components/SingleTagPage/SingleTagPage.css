@@ -4,12 +4,26 @@
 	max-width: 150rem;
 	margin: 0 auto;
 	display: grid;
-	grid-template-columns: repeat(10, 1fr);
-	grid-column-gap: 2rem;
+	grid-template-rows: max-content 1fr;
 	padding: 2rem 0;
 	margin: 2rem auto;
 	position: relative;
 	/* background-color: rgba(235, 235, 235, 0.39); */
+}
+
+.All {
+	grid-row: 2/3;
+	grid-column: 1/-1;
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-column-gap: 2rem;
+	position: relative;
+}
+
+.Tags {
+	grid-row: 1/2;
+	grid-column: 1/-1;
+	margin-bottom: 1rem;
 }
 
 .TagContainer {
