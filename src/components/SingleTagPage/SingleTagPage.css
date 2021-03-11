@@ -1,7 +1,7 @@
 /** @format */
 
 .Container {
-	max-width: 150rem;
+	max-width: 140rem;
 	margin: 0 auto;
 	display: grid;
 	grid-template-rows: max-content 1fr;

@@ -17,7 +17,7 @@ const logout = (props) => {
 			type: 'AUTH_LOGOUT',
 		});
 	}, [firebase, dispatch]);
-	return <Redirect to='/login' />;
+	return <Redirect to='/' />;
 };
 
 export default logout;

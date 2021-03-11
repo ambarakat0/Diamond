@@ -139,7 +139,9 @@ const home = React.memo((props) => {
 	const onChangeHandler = (e) => {
 		setPostData(e.target.value);
 	};
-
+	const addNewLine = (e) => {
+		if (e.key === 'Enter') setPostData(postData + '\n');
+	};
 	const onEmojiClick = async (e, emojiObject) => {
 		setChosenEmoji(emojiObject);
 	};
@@ -273,6 +275,7 @@ const home = React.memo((props) => {
 					<TextArea
 						value={postData}
 						changed={onChangeHandler}
+						press={addNewLine}
 						placeholder='Share your moment'
 					/>
 				</div>

@@ -12,10 +12,13 @@
 }
 
 .ButtonOutline:hover,
-.ButtonOutline:active,
-.ButtonOutline:visited,
-.ButtonOutline:focus {
+.ButtonOutline:active {
 	background-color: var(--primary-color);
 	color: #fff;
+	outline: none;
+}
+
+.ButtonOutline:visited,
+.ButtonOutline:focus {
 	outline: none;
 }

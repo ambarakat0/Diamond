@@ -1,25 +1,55 @@
 /** @format */
 
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import SingleTagPage from '../../../components/SingleTagPage/SingleTagPage';
 import GPost from '../../Posts/GPost/GPost';
 import Spinner from '../../../components/UI/Spinner/Spinner';
-import { fetchData } from '../../../Shared/handleData';
+import { fetchDataNew, fetchDataNextBatch } from '../../../Shared/handleData';
 
 // import { Gposts } from '../../../Data/GPostData';
 
-import { authStateContext } from '../../../Global/TrackAuthState';
+// import { authStateContext } from '../../../Global/TrackAuthState';
 // import { Redirect } from 'react-router-dom';
 
 const home = (props) => {
-	const user = useContext(authStateContext).initState;
+	// const user = useContext(authStateContext).initState;
 	const [data, setData] = useState(null);
-	// const [auth, setAuth] = useState(true);
+	const [lastKey, setLastKey] = useState('');
+	const [nextPosts_loading, setNextPostsLoading] = useState(false);
+
 	useEffect(() => {
-		let arr = [];
-		fetchData(arr, setData);
-	}, [fetchData, user]);
+		fetchDataNew()
+			.then((res) => {
+				setData(res.posts);
+				setLastKey(res.lastKey);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		return () => {
+			setData(null);
+			setLastKey('');
+			setNextPostsLoading(false);
+		};
+	}, [fetchDataNew]);
+
+	const fetchMorePosts = (key) => {
+		if (key) {
+			setNextPostsLoading(true);
+			fetchDataNextBatch(key)
+				.then((res) => {
+					setLastKey(res.lastKey);
+					// add new posts to old posts
+					setData(data.concat(res.posts));
+					setNextPostsLoading(false);
+				})
+				.catch((err) => {
+					console.log(err);
+					setNextPostsLoading(false);
+				});
+		}
+	};
 
 	if (data) {
 		const posts = data.map((post) => (
@@ -42,8 +72,18 @@ const home = (props) => {
 		));
 		return (
 			<Fragment>
-				{/* {direct} */}
-				<SingleTagPage name='Home' posts={posts} />;
+				<SingleTagPage
+					name='Home'
+					posts={posts}
+					spinner={
+						nextPosts_loading ? (
+							<div style={{ textAlign: 'center' }}>
+								<Spinner />
+							</div>
+						) : null
+					}
+					more={() => fetchMorePosts(lastKey)}
+				/>
 			</Fragment>
 		);
 	} else {
@@ -54,15 +94,10 @@ const home = (props) => {
 		);
 		return (
 			<Fragment>
-				<SingleTagPage name='Home' posts={spinner} />;
+				<SingleTagPage name='Home' posts={spinner} />
 			</Fragment>
 		);
 	}
-
-	// let direct = null;
-	// if (!user) {
-	// 	return (direct = <Redirect to='/' />);
-	// }
 };
 
 export default home;

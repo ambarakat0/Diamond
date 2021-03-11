@@ -1,47 +1,68 @@
 /** @format */
 
 import firebase from '../components/Firebase/Firebase';
+import { db } from '../components/Firebase/Firebase';
 
-export const fetchData = async (arr, setData) => {
+export const fetchDataNew = async () => {
 	try {
-		firebase
-			.firestore()
+		const data = await db
 			.collection('Posts')
-			.onSnapshot((snapshot) => {
-				snapshot.docs.forEach(async (doc) => {
-					await arr.push(doc.data());
-					setData(arr.sort((a, b) => b.Time - a.Time));
-				});
-			});
+			.orderBy('Time', 'desc')
+			.limit(5)
+			.get();
+		let lastKey = '';
+		let posts = [];
+		data.forEach((doc) => {
+			posts.push(doc.data());
+			lastKey = doc.data().Time;
+		});
+		return { posts, lastKey };
 	} catch (err) {
 		console.log('false');
-		// setAuth(false);
 	}
 };
 
-export const fetchUserData = async (user, setUserData, setAuth) => {
+export const fetchDataNextBatch = async (key) => {
 	try {
-		const data = new Date(user.metadata.creationTime);
-		const year = data.getFullYear();
-		const month = data.toLocaleString('default', { month: 'long' });
-		const creationDate = `Joined in ${month} ${year}`;
-		firebase
-			.firestore()
-			.collection('users')
-			.doc(user.uid)
-			.onSnapshot((res) => {
-				setUserData({
-					name: res.data().userName,
-					displayName: res.data().displayName,
-					age: res.data().age,
-					country: res.data().country,
-					creationTime: creationDate,
-					imgPro: res.data().imgProfile,
-					cover: res.data().imgCover,
+		const data = await db
+			.collection('Posts')
+			.orderBy('Time', 'desc')
+			.startAfter(key)
+			.limit(5)
+			.get();
+		let lastKey = '';
+		let posts = [];
+		data.forEach((doc) => {
+			posts.push(doc.data());
+			lastKey = doc.data().Time;
+		});
+		return { posts, lastKey };
+	} catch (err) {}
+};
+
+export const fetchUserData = (user, setUserData) => {
+	if (user) {
+		try {
+			const data = new Date(user.metadata.creationTime);
+			const year = data.getFullYear();
+			const month = data.toLocaleString('default', { month: 'long' });
+			const creationDate = `Joined in ${month} ${year}`;
+			db.collection('users')
+				.doc(user.uid)
+				.onSnapshot((res) => {
+					setUserData({
+						name: res.data().userName,
+						displayName: res.data().displayName,
+						age: res.data().age,
+						country: res.data().country,
+						creationTime: creationDate,
+						imgPro: res.data().imgProfile,
+						cover: res.data().imgCover,
+					});
 				});
-			});
-	} catch (err) {
-		console.log(err.message);
+		} catch (err) {
+			console.log(err.message);
+		}
 	}
 };
 

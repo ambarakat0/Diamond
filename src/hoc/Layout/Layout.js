@@ -26,6 +26,7 @@ import Notification from '../../containers/Pages/Notification/Notification';
 import Chat from '../../containers/Pages/Chat/Chat';
 import Bookmarks from '../../containers/Pages/Bookmarks/Bookmarks';
 import Profile from '../../containers/Pages/Profile/Profile';
+import User from '../../containers/Pages/User/User';
 import Settings from '../../containers/Pages/Settings/Settings';
 import Home from '../../containers/Pages/Home/Home';
 
@@ -65,7 +66,8 @@ const layout = (props) => {
 				<Route path='/notification' component={Notification} />
 				<Route path='/chat' component={Chat} />
 				<Route path='/bookmarks' component={Bookmarks} />
-				<Route path={`/profile/${user.uid}`} component={Profile} />
+				<Route path={`/profile`} component={Profile} />
+				<Route path={`/:userId`} component={User} />
 				<Route path='/settings' component={Settings} />
 			</Switch>
 		);

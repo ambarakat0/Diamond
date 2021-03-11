@@ -21,6 +21,7 @@ const textArea = (props) => {
 			className={classes.TextArea}
 			value={props.value}
 			onChange={props.changed}
+			onKeyPress={props.press}
 		/>
 	);
 };

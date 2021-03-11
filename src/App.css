@@ -57,15 +57,12 @@
 	line-gap-override: 2%;
 }
 
-* {
-	margin: 0;
-	padding: 0;
-}
-
 *,
 *::before,
 *::after {
 	box-sizing: inherit;
+	margin: 0;
+	padding: 0;
 }
 
 html {
@@ -78,4 +75,5 @@ body {
 	font-weight: 400;
 	font-size: 2rem;
 	line-height: 1.6;
+	padding: 1rem;
 }

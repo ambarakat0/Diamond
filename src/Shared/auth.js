@@ -1,12 +1,12 @@
 /** @format */
 
 import firebase from '../components/Firebase/Firebase';
+import { auth } from '../components/Firebase/Firebase';
 
 export const signUpReq = async (userData, dispatch) => {
 	try {
 		dispatch({ type: 'AUTH_START' });
-		await firebase
-			.auth()
+		await auth
 			.createUserWithEmailAndPassword(userData.email, userData.password)
 			.then((res) => {
 				return firebase.firestore().collection('users').doc(res.user.uid).set({
@@ -33,8 +33,7 @@ export const signUpReq = async (userData, dispatch) => {
 export const loginReq = async (userData, dispatch) => {
 	try {
 		dispatch({ type: 'AUTH_START' });
-		await firebase
-			.auth()
+		await auth
 			.signInWithEmailAndPassword(userData.email, userData.password)
 			.then((res) => {
 				dispatch({

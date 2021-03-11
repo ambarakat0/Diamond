@@ -1,54 +1,69 @@
 /** @format */
 
-import React, {
-	useState,
-	useContext,
-	useEffect,
-	Fragment,
-	useRef,
-} from 'react';
+import React, { useState, useEffect, Fragment, useRef } from 'react';
 // import { Redirect } from 'react-router-dom';
 
-import classes from './Profile.css';
+import classes from './User.css';
 
 import Nav from '../../../components/Nav/Nav';
 import GPost from '../../Posts/GPost/GPost';
 import AddPost from '../../AddPost/AddPost';
 
-import noProfilePic from '../../../assets/images/noprofilepic.png';
-import defCover from '../../../assets/images/defCover.jpg';
-
-import firebase from '../../../components/Firebase/Firebase';
 import Icon from '../../../components/UI/Icon/Icon';
 import ButtonOutline from '../../../components/UI/ButtonOutline/ButtonOutline';
 // import Button from '../../../components/UI/Button/Button';
 import FlatButton from '../../../components/UI/FlatButton/FlatButton';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 
-import { authStateContext } from '../../../Global/TrackAuthState';
+import { fetchDataNew, fetchDataNextBatch } from '../../../Shared/handleData';
 
-import {
-	uploadData,
-	fetchUserData,
-	fetchDataNew,
-	fetchDataNextBatch,
-} from '../../../Shared/handleData';
+import { db } from '../../../components/Firebase/Firebase';
 
-const profile = (props) => {
+import noProfilePic from '../../../assets/images/noprofilepic.png';
+import defCover from '../../../assets/images/defCover.jpg';
+
+const user = (props) => {
 	const topRef = useRef();
-	const keyRef = useRef();
-	const user = useContext(authStateContext).initState;
+
+	const [userData, setUserData] = useState(null);
+	const {
+		params: { userId },
+	} = props.match;
+
 	//-------Fetched data from server-----------/////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	const [ImgCover, setImgCover] = useState(defCover);
-	const [ImgPro, setImgPro] = useState(noProfilePic);
-	const [userData, setUserData] = useState(null);
-	// const [login, setLogin] = useState(false);
-	// const [signup, setSignup] = useState(false);
 
 	const [posts, setPosts] = useState(null);
 	const [lastKey, setLastKey] = useState('');
 	const [nextPosts_loading, setNextPostsLoading] = useState(false);
+
+	useEffect(() => {
+		db.collection('users')
+			.where('displayName', '==', userId)
+			.get()
+			.then((snapshot) => {
+				snapshot.forEach((doc) => {
+					// const data = new Date(doc.id.metadata.creationTime);
+					// const year = data.getFullYear();
+					// const month = data.toLocaleString('default', { month: 'long' });
+					// const creationDate = `Joined in ${month} ${year}`;
+					db.collection('users')
+						.doc(doc.id)
+						.get()
+						.then((res) => {
+							setUserData({
+								name: res.data().userName,
+								displayName: res.data().displayName,
+								age: res.data().age,
+								country: res.data().country,
+								// creationTime: creationDate,
+								imgPro: res.data().imgProfile,
+								cover: res.data().imgCover,
+							});
+						});
+				});
+			});
+	}, []);
 
 	useEffect(() => {
 		if (userData) {
@@ -58,7 +73,6 @@ const profile = (props) => {
 						res.posts.filter((p) => p.NickName === userData.displayName),
 					);
 					setLastKey(res.lastKey);
-					keyRef.current = res.lastKey;
 				})
 				.catch((err) => {
 					console.log(err);
@@ -71,33 +85,7 @@ const profile = (props) => {
 		}
 	}, [fetchDataNew, userData]);
 
-	useEffect(() => {
-		fetchUserData(user, setUserData);
-	}, [user]);
-
-	useEffect(() => {
-		if (ImgPro !== noProfilePic) {
-			const name = userData.name + '-' + user.uid;
-			uploadData(ImgPro, name).then((url) => {
-				firebase.firestore().collection('users').doc(user.uid).update({
-					imgProfile: url,
-				});
-			});
-		}
-	}, [ImgPro]);
-
-	useEffect(() => {
-		if (ImgCover !== defCover) {
-			const name = userData.name + '-COVER-' + user.uid;
-			uploadData(ImgCover, name).then((url) => {
-				firebase.firestore().collection('users').doc(user.uid).update({
-					imgCover: url,
-				});
-			});
-		}
-	}, [ImgCover]);
 	const fetchMorePosts = (key) => {
-		if (key === keyRef.current) console.log('same');
 		if (key) {
 			setNextPostsLoading(true);
 			fetchDataNextBatch(key)
@@ -117,44 +105,6 @@ const profile = (props) => {
 				});
 		}
 	};
-
-	const uploadProImgOnChange = (e) => {
-		setImgPro(e.target.files[0]);
-	};
-
-	const uploadCoverImgOnChange = (e) => {
-		setImgCover(e.target.files[0]);
-	};
-
-	// let redirect = null;
-	// const onLoginHandler = () => {
-	// 	setLogin(true);
-	// };
-	// const onSignUpHandler = () => {
-	// 	setSignup(true);
-	// };
-
-	// if (login) {
-	// 	redirect = <Redirect to='/login' />;
-	// }
-	// if (signup) {
-	// 	redirect = <Redirect to='/signup' />;
-	// }
-
-	// if (!userData) {
-	// 	return (
-	// 		<Fragment>
-	// 			{redirect}
-	// 			<div className={classes.PopupContainer}>
-	// 				<p className={classes.PopupText}>{props.text}</p>
-	// 				<div className={classes.PopupBtnsContainer}>
-	// 					<Button clicked={onLoginHandler}>login</Button>
-	// 					<Button clicked={onSignUpHandler}>signUp</Button>
-	// 				</div>
-	// 			</div>
-	// 		</Fragment>
-	// 	);
-	// }
 
 	const onClickHandler = () => {
 		topRef.current.scrollIntoView({
@@ -190,34 +140,18 @@ const profile = (props) => {
 						ref={topRef}
 					>
 						<div>
-							<label htmlFor='uploadCoverImg'>
-								<img
-									src={userData.cover ? userData.cover : ImgCover}
-									alt='cover'
-									className={classes.ImgCover}
-								/>
-							</label>
-							<input
-								type='file'
-								id='uploadCoverImg'
-								onChange={(e) => uploadCoverImgOnChange(e)}
-								style={{ display: 'none' }}
-							></input>
+							<img
+								src={userData.cover ? userData.cover : defCover}
+								alt='cover'
+								className={classes.ImgCover}
+							/>
 						</div>
 						<div>
-							<label htmlFor='uploadProImg'>
-								<img
-									src={userData.imgPro ? userData.imgPro : ImgPro}
-									alt='profile'
-									className={classes.Img}
-								/>
-							</label>
-							<input
-								type='file'
-								id='uploadProImg'
-								onChange={(e) => uploadProImgOnChange(e)}
-								style={{ display: 'none' }}
-							></input>
+							<img
+								src={userData.imgPro ? userData.imgPro : noProfilePic}
+								alt='profile'
+								className={classes.Img}
+							/>
 						</div>
 					</div>
 					<div className={classes.Data}>
@@ -280,4 +214,4 @@ const profile = (props) => {
 		);
 };
 
-export default profile;
+export default user;

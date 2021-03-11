@@ -2,7 +2,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import OutlineButton from '../ButtonOutline/ButtonOutline';
-import SolidButton from '../Button/Button';
 import noProfilePic from '../../../assets/images/noprofilepic.png';
 
 import FlatButton from '../FlatButton/FlatButton';
@@ -12,8 +11,6 @@ import classes from './FollowSugg.css';
 import firebase from '../../../components/Firebase/Firebase';
 
 import { authStateContext } from '../../../Global/TrackAuthState';
-
-import { addFollow } from './Follow';
 
 const follow = (props) => {
 	const user = useContext(authStateContext).initState;
@@ -75,4 +72,4 @@ const follow = (props) => {
 	}
 };
 
-export default follow;
+export default React.memo(follow);

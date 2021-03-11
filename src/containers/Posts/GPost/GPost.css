@@ -3,6 +3,7 @@
 .Container {
 	display: grid;
 	grid-row-gap: 1rem;
+	/* grid-template-rows: (4, min-content); */
 	padding: 1.5rem;
 	border-radius: 5px;
 	background-color: var(--bg);
@@ -118,17 +119,15 @@
 .ReactText {
 	font-size: 1.3rem;
 	margin-left: -0.8rem;
-	margin-bottom: -0.5rem;
 	transition: all 0.2s;
 	color: var(--dark-grey);
-}
-.Third {
-	height: 100%;
+	line-height: 1;
 }
 
 .Media {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+	height: 30rem;
 }
 
 .ImgContentContainer {
@@ -151,6 +150,7 @@
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	object-position: center;
 }
 
 .Video {

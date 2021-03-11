@@ -12,7 +12,6 @@ const nav = (props) => {
 	const onclickLogo = () => {
 		props.history.push('/home');
 	};
-
 	return (
 		<nav className={classes.Nav}>
 			<div className={classes.ImgContainer}>

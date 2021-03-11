@@ -1,21 +1,20 @@
 /** @format */
 
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment, useContext } from 'react';
 import NavItem from '../NavItem/NavItem';
 import classes from './NavList.css';
-import TagsContainer from '../../TagsContainer/TagsContainer';
 import Icon from '../../../components/UI/Icon/Icon';
 import { withRouter } from 'react-router-dom';
 
 import { authStateContext } from '../../../Global/TrackAuthState';
 
 const navlist = (props) => {
-	const [open, setOpen] = useState(false);
+	// const [open, setOpen] = useState(false);
 	const user = useContext(authStateContext).initState;
 
-	const onOpenHandler = () => {
-		setOpen((prevState) => !prevState);
-	};
+	// const onOpenHandler = () => {
+	// 	setOpen((prevState) => !prevState);
+	// };
 
 	const tagsHash = props.match.path.split('/')[1];
 	let classesCollection = [classes.NavItem];
@@ -35,22 +34,17 @@ const navlist = (props) => {
 				<NavItem link='/chat' iconName='bubbles'>
 					Chat
 				</NavItem>
-				<li onClick={onOpenHandler} className={classesCollection.join(' ')}>
+				{/* <li onClick={onOpenHandler} className={classesCollection.join(' ')}>
 					<Icon iconname='price-tags' />
 					<span>Tags</span>
-				</li>
+				</li> */}
 				<NavItem link='/bookmarks' iconName='pushpin'>
 					Pin
 				</NavItem>
-				{user ? (
-					<NavItem link={`/profile/${user.uid}`} iconName='user'>
-						Profile
-					</NavItem>
-				) : (
-					<NavItem link={`/profile/`} iconName='user'>
-						Profile
-					</NavItem>
-				)}
+				<NavItem link={`/profile`} iconName='user'>
+					Profile
+				</NavItem>
+
 				<NavItem link='/settings' iconName='cog'>
 					Settings
 				</NavItem>
@@ -58,7 +52,7 @@ const navlist = (props) => {
 					Log out
 				</NavItem>
 			</ul>
-			{open && <TagsContainer />}
+			{/* {open && <TagsContainer />} */}
 		</Fragment>
 	);
 };

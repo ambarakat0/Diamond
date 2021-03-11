@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useState, Fragment, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import IconWithTooltip from '../../../components/UI/IconWithTooltip/IconWithTooltip';
 import Icon from '../../../components/UI/Icon/Icon';
 import classes from './GPost.css';
@@ -34,10 +35,16 @@ const gpost = (props) => {
 	const user = useContext(authStateContext).initState;
 
 	useEffect(() => {
+		let mount = false;
 		if (user) {
-			fetchUserData(user, setUserData);
-			displayLikeStar(props.ownerId, user.uid, setLike);
+			if (!mount) {
+				fetchUserData(user, setUserData);
+				displayLikeStar(props.ownerId, user.uid, setLike);
+			}
 		}
+		return () => {
+			mount = true;
+		};
 	}, [user]);
 
 	const datePassed = timeDiffCalc(new Date(props.time));
@@ -190,7 +197,6 @@ const gpost = (props) => {
 	if (showSpinner) {
 		spinner = <Spinner />;
 	}
-
 	return (
 		<Fragment>
 			{popup}
@@ -203,12 +209,16 @@ const gpost = (props) => {
 				</div>
 				<div className={classes.Second}>
 					<div className={classes.UserData}>
-						<div style={{ display: 'flex', alignItems: 'center' }}>
-							<img
-								src={props.img}
-								alt='Jake Archibald'
-								className={classes.Img}
-							/>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								overflow: 'hidden',
+							}}
+						>
+							<Link to={`/${props.nickname}`}>
+								<img src={props.img} alt={props.name} className={classes.Img} />
+							</Link>
 						</div>
 						<div
 							style={{
@@ -235,12 +245,14 @@ const gpost = (props) => {
 						<p className={classes.DataText}>{datePassed}</p>
 					</div>
 				</div>
+				<p className={classes.Text}>{props.text}</p>
 				<div className={classes.Third}>
-					<p className={classes.Text}>{props.text}</p>
-					<div className={classes.Media}>
-						{ImgContent}
-						{VideoContent}
-					</div>
+					{ImgContent || VideoContent ? (
+						<div className={classes.Media}>
+							{ImgContent}
+							{VideoContent}
+						</div>
+					) : null}
 				</div>
 				<div className={classes.Fourth}>
 					<div className={classes.ReactIcon} onClick={onCommentHandler}>
@@ -251,14 +263,6 @@ const gpost = (props) => {
 						/>
 						<span className={classes.ReactText}>{props.comment}</span>
 					</div>
-					<div className={classes.ReactIcon}>
-						<IconWithTooltip
-							iconName='share2'
-							text='Share'
-							clicked={onAddShare}
-						/>
-						<span className={classes.ReactText}>{props.share}</span>
-					</div>
 					<div className={classes.ReactIcon} onClick={onLikeHandler}>
 						<IconWithTooltip
 							iconName={like ? 'star-full' : 'star-empty'}
@@ -266,6 +270,14 @@ const gpost = (props) => {
 							clicked={onAddLike}
 						/>
 						<span className={classes.ReactText}>{props.like}</span>
+					</div>
+					<div className={classes.ReactIcon}>
+						<IconWithTooltip
+							iconName='share2'
+							text='Share'
+							clicked={onAddShare}
+						/>
+						<span className={classes.ReactText}>{props.share}</span>
 					</div>
 					<div className={classes.ReactIcon} onClick={onBookmarkHandler}>
 						<IconWithTooltip

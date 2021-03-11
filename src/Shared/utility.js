@@ -86,9 +86,10 @@ export const timeDiffCalc = (last) => {
 
 	if (days === 0 && hours >= 1)
 		difference += hours === 0 || hours === 1 ? `${hours} h` : `${hours} hs`;
-	if (days === 0 && minutes >= 1)
+	if (days === 0 && hours === 0 && minutes >= 1)
 		difference +=
 			minutes === 0 || hours === 1 ? `${minutes} min` : `${minutes} mins`;
+	if (minutes === 0 && days === 0 && hours === 0) difference += 'just now';
 
 	return difference;
 };

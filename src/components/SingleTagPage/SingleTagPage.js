@@ -7,6 +7,7 @@ import AddPost from '../../containers/AddPost/AddPost';
 import Icon from '../UI/Icon/Icon';
 import SideBar from '../SideBar/SideBar';
 import Tags from '../TagsContainer/TagsContainer';
+import FlatButton from '../UI/FlatButton/FlatButton';
 
 import { title } from '../../Shared/utility';
 
@@ -43,6 +44,11 @@ const tagPage = (props) => {
 					</div>
 					<AddPost />
 					{props.posts}
+					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+						<FlatButton clicked={props.more}>More</FlatButton>
+						{props.spinner}
+						<FlatButton clicked={onClickHandler}>Back to top</FlatButton>
+					</div>
 				</div>
 				<SideBar />
 			</div>

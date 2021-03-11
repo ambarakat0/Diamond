@@ -10,6 +10,7 @@
 	padding: 1.5rem 2rem;
 	color: var(--dark-grey);
 	font-size: 1.8rem;
+	font-family: inherit;
 }
 
 .TextArea::placeholder {

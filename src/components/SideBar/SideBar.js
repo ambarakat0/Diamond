@@ -14,4 +14,4 @@ const sideBar = (props) => {
 	);
 };
 
-export default sideBar;
+export default React.memo(sideBar);
