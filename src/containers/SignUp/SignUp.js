@@ -7,7 +7,7 @@ import Logo from '../../assets/images/diamond-logo.png';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-import { updateObject, checkValidity } from '../../Shared/utility';
+import { updateObject, checkValidity, createData } from '../../Shared/utility';
 import { signUpReq } from '../../Shared/auth';
 
 // import DatePicker from 'react-datepicker';
@@ -117,12 +117,12 @@ const signup = (props) => {
 		userData.country.valid,
 		birthDate,
 	]);
-
 	const onChangeDateOfBirth = (e) => {
 		setBirthDate(e.target.value);
 	};
 	const onSubmitHandler = async (e) => {
 		e.preventDefault();
+		const creationDate = createData(new Date());
 		const userAuth = {
 			userName: userData.name.value,
 			displayName: `@${userData.displayName.value}`,
@@ -130,8 +130,8 @@ const signup = (props) => {
 			password: userData.password.value,
 			country: userData.country.value,
 			age: birthDate,
+			data: creationDate,
 		};
-		console.log(userAuth);
 		// await firebase
 		// 	.firestore()
 		// 	.collection('users')

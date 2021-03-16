@@ -30,6 +30,8 @@ import User from '../../containers/Pages/User/User';
 import Settings from '../../containers/Pages/Settings/Settings';
 import Home from '../../containers/Pages/Home/Home';
 
+import lVPost from '../../containers/Posts/LVPost/LVPost';
+
 import { authStateContext } from '../../Global/TrackAuthState';
 
 const layout = (props) => {
@@ -67,8 +69,10 @@ const layout = (props) => {
 				<Route path='/chat' component={Chat} />
 				<Route path='/bookmarks' component={Bookmarks} />
 				<Route path={`/profile`} component={Profile} />
-				<Route path={`/:userId`} component={User} />
+				<Route path={`/:userId`} exact component={User} />
 				<Route path='/settings' component={Settings} />
+
+				<Route path='/:userId/:postId' component={lVPost} />
 			</Switch>
 		);
 	}

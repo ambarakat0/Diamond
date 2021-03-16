@@ -17,13 +17,22 @@
 	padding: 1rem 0;
 }
 
-.ImgCover {
-	height: 25vh;
+.ImgCoverContainer {
+	height: 25rem;
 	width: 100%;
+	overflow: hidden;
+	transition: all 0.2s;
 	cursor: pointer;
+	margin-bottom: 1rem;
 }
 
-.Img {
+.ImgCover {
+	height: auto;
+	width: 100%;
+	/* margin-top: -10rem; */
+}
+
+/* .Img {
 	position: absolute;
 	top: 60%;
 	right: 35%;
@@ -33,6 +42,28 @@
 	margin-right: 2rem;
 	cursor: pointer;
 	border: solid 4px #fff;
+} */
+
+.ImgContainer {
+	position: absolute;
+	top: 60%;
+	right: 35%;
+	border: solid 4px #fff;
+	border-radius: 9999px;
+	height: 15rem;
+	width: 15rem;
+	overflow: hidden;
+	transition: all 0.2s;
+	cursor: pointer;
+}
+
+.Img {
+	width: 100%;
+	height: auto;
+}
+
+.ImgContainer:hover {
+	filter: brightness(0.8);
 }
 
 .Data {
@@ -48,6 +79,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: start;
+	color: rgb(53, 53, 53);
 }
 
 .UserName {
@@ -65,10 +97,16 @@
 	cursor: pointer;
 }
 
+.Bio {
+	margin-top: 1rem;
+	font-size: 2rem;
+	color: rgb(53, 53, 53);
+}
+
 .MisData {
 	display: flex;
 	font-size: 1.5rem;
-	margin-top: 3rem;
+	margin-top: 1rem;
 	margin-bottom: 2rem;
 }
 

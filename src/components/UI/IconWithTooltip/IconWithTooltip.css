@@ -51,3 +51,7 @@
 .Ic {
 	fill: var(--primary-color);
 }
+
+.active {
+	fill: rgb(204, 7, 0);
+}

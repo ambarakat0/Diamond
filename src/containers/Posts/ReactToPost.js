@@ -1,6 +1,6 @@
 /** @format */
 
-import firebase from '../../components/Firebase/Firebase';
+import { db } from '../../components/Firebase/Firebase';
 
 export const addCommentOrShare = async (
 	ownerOfData,
@@ -9,40 +9,38 @@ export const addCommentOrShare = async (
 ) => {
 	try {
 		let dataToChange = null;
-		await firebase
-			.firestore()
+		await db
 			.collection('Posts')
 			.where('UserId', '==', ownerOfData)
 			.get()
 			.then((snapshot) =>
 				snapshot.forEach((doc) => {
-					firebase
-						.firestore()
-						.collection('Posts')
+					db.collection('Posts')
 						.doc(doc.id)
 						.get()
 						.then((doc) => {
 							if (typeOfAction === 'Comment') {
 								dataToChange = doc.data().Comment;
-								firebase
-									.firestore()
-									.collection('Posts')
+								db.collection('Posts')
 									.where('UserId', '==', ownerOfData)
 									.get()
 									.then((snapshot) => {
 										snapshot.forEach((doc) => {
-											firebase
-												.firestore()
-												.collection('Posts')
+											db.collection('Posts')
 												.doc(doc.id)
 												.set(
 													{
 														Comment: [
 															...dataToChange,
 															{
-																id: datapassed.uid,
+																id: datapassed.uid + datapassed.time,
 																img: datapassed.imgPro,
 																text: datapassed.text,
+																name: datapassed.name,
+																nickname: datapassed.nickname,
+																time: datapassed.time,
+																downvote: [],
+																upvote: [],
 															},
 														],
 													},
@@ -52,16 +50,12 @@ export const addCommentOrShare = async (
 									});
 							} else {
 								dataToChange = doc.data().Share;
-								firebase
-									.firestore()
-									.collection('Posts')
+								db.collection('Posts')
 									.where('UserId', '==', ownerOfData)
 									.get()
 									.then((snapshot) => {
 										snapshot.forEach((doc) => {
-											firebase
-												.firestore()
-												.collection('Posts')
+											db.collection('Posts')
 												.doc(doc.id)
 												.set(
 													{
@@ -88,23 +82,17 @@ export const addCommentOrShare = async (
 
 export const toggleLike = (ownerOfData, datapassed) => {
 	try {
-		firebase
-			.firestore()
-			.collection('Posts')
+		db.collection('Posts')
 			.where('UserId', '==', ownerOfData)
 			.get()
 			.then((snapshot) =>
 				snapshot.forEach((doc) => {
-					firebase
-						.firestore()
-						.collection('Posts')
+					db.collection('Posts')
 						.doc(doc.id)
 						.get()
 						.then((doc) => {
 							if (doc.data().Like.includes(datapassed.uid)) {
-								firebase
-									.firestore()
-									.collection('Posts')
+								db.collection('Posts')
 									.where('UserId', '==', ownerOfData)
 									.get()
 									.then((snapshot) => {
@@ -112,32 +100,22 @@ export const toggleLike = (ownerOfData, datapassed) => {
 											let data = doc
 												.data()
 												.Like.filter((like) => like !== datapassed.uid);
-											firebase
-												.firestore()
-												.collection('Posts')
-												.doc(doc.id)
-												.update({
-													Like: data,
-												});
+											db.collection('Posts').doc(doc.id).update({
+												Like: data,
+											});
 										});
 									});
 							} else {
-								firebase
-									.firestore()
-									.collection('Posts')
+								db.collection('Posts')
 									.where('UserId', '==', ownerOfData)
 									.get()
 									.then((snapshot) => {
 										snapshot.forEach((doc) => {
 											let data = doc.data().Like;
 											let newData = [...data, datapassed.uid];
-											firebase
-												.firestore()
-												.collection('Posts')
-												.doc(doc.id)
-												.update({
-													Like: newData,
-												});
+											db.collection('Posts').doc(doc.id).update({
+												Like: newData,
+											});
 										});
 									});
 							}
@@ -151,16 +129,12 @@ export const toggleLike = (ownerOfData, datapassed) => {
 
 export const displayLikeStar = (ownerOfData, uid, setLike) => {
 	try {
-		firebase
-			.firestore()
-			.collection('Posts')
+		db.collection('Posts')
 			.where('UserId', '==', ownerOfData)
 			.get()
 			.then((snapshot) =>
 				snapshot.forEach((doc) => {
-					firebase
-						.firestore()
-						.collection('Posts')
+					db.collection('Posts')
 						.doc(doc.id)
 						.get()
 						.then((doc) => {
@@ -177,9 +151,7 @@ export const displayLikeStar = (ownerOfData, uid, setLike) => {
 
 export const share = (uid, data) => {
 	try {
-		firebase
-			.firestore()
-			.collection('users')
+		db.collection('users')
 			.doc(uid)
 			.collection('posts')
 			.add(data)

@@ -17,10 +17,19 @@
 	padding: 1rem 0;
 }
 
-.ImgCover {
-	height: 25vh;
+.ImgCoverContainer {
+	height: 25rem;
 	width: 100%;
+	overflow: hidden;
+	transition: all 0.2s;
 	cursor: pointer;
+	margin-bottom: 1rem;
+}
+
+.ImgCover {
+	height: auto;
+	width: 100%;
+	/* margin-top: -10rem; */
 }
 
 .Img {

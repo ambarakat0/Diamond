@@ -14,6 +14,7 @@ export const signUpReq = async (userData, dispatch) => {
 					displayName: userData.displayName,
 					age: userData.age,
 					country: userData.country,
+					creationDate: userData.data,
 				});
 			})
 			.then((res) => {

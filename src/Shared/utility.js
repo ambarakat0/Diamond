@@ -177,6 +177,14 @@ export const fetchData = async (arr, setData) => {
 	}
 };
 
+export const createData = (d) => {
+	const data = new Date(d);
+	const year = data.getFullYear();
+	const month = data.toLocaleString('default', { month: 'long' });
+	const creationDate = `Joined in ${month} ${year}`;
+	return creationDate;
+};
+
 export const fetchUserData = async (user, setUserData, setAuth) => {
 	try {
 		const data = new Date(user.metadata.creationTime);

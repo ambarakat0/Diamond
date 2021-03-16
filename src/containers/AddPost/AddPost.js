@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { useEffect, useState, useContext } from 'react';
+
 import classes from './AddPost.css';
 import TextArea from '../../components/AddPost/TextArea/TextArea';
 import Button from '../../components/UI/Button/Button';
@@ -98,7 +99,9 @@ const home = React.memo((props) => {
 			.doc(user.uid)
 			.collection('posts')
 			.add(p)
-			.then(() => {});
+			.then(() => {
+				window.location.reload();
+			});
 	};
 
 	const onAddTagsHandler = (e) => {

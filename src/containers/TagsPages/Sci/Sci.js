@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import SingleTagPage from '../../../components/SingleTagPage/SingleTagPage';
-import GPost from '../../Posts/GPost/GPost';
+import SinglePost from '../../Posts/SinglePost/SinglePost';
 
 import { filterPosts, fetchData } from '../../../Shared/utility';
 
@@ -16,7 +16,7 @@ const science = (props) => {
 	const filteredPosts = filterPosts(data, 'science');
 
 	const posts = filteredPosts.map((post) => (
-		<GPost
+		<SinglePost
 			key={`${post.NickName}-${Math.random(20000)}`}
 			name={post.Name}
 			nickname={post.NickName}

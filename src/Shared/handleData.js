@@ -3,6 +3,8 @@
 import firebase from '../components/Firebase/Firebase';
 import { db } from '../components/Firebase/Firebase';
 
+import { createData } from './utility';
+
 export const fetchDataNew = async () => {
 	try {
 		const data = await db
@@ -21,7 +23,25 @@ export const fetchDataNew = async () => {
 		console.log('false');
 	}
 };
-
+// export const fetchDataNew = (setData, setLastKey) => {
+// 	try {
+// 		let lastKey = '';
+// 		let posts = [];
+// 		db.collection('Posts')
+// 			.orderBy('Time', 'desc')
+// 			.limit(5)
+// 			.onSnapshot((doc) => {
+// 				doc.forEach((d) => {
+// 					posts.push(d.data());
+// 					lastKey = d.data().Time;
+// 				});
+// 				setData(posts);
+// 				setLastKey(lastKey);
+// 			});
+// 	} catch (err) {
+// 		console.log('false');
+// 	}
+// };
 export const fetchDataNextBatch = async (key) => {
 	try {
 		const data = await db
@@ -43,10 +63,7 @@ export const fetchDataNextBatch = async (key) => {
 export const fetchUserData = (user, setUserData) => {
 	if (user) {
 		try {
-			const data = new Date(user.metadata.creationTime);
-			const year = data.getFullYear();
-			const month = data.toLocaleString('default', { month: 'long' });
-			const creationDate = `Joined in ${month} ${year}`;
+			const creationDate = createData(user.metadata.creationTime);
 			db.collection('users')
 				.doc(user.uid)
 				.onSnapshot((res) => {
@@ -58,6 +75,7 @@ export const fetchUserData = (user, setUserData) => {
 						creationTime: creationDate,
 						imgPro: res.data().imgProfile,
 						cover: res.data().imgCover,
+						bio: res.data().bio,
 					});
 				});
 		} catch (err) {

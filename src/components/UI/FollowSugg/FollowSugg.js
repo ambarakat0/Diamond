@@ -11,6 +11,7 @@ import classes from './FollowSugg.css';
 import firebase from '../../../components/Firebase/Firebase';
 
 import { authStateContext } from '../../../Global/TrackAuthState';
+import { withRouter } from 'react-router';
 
 const follow = (props) => {
 	const user = useContext(authStateContext).initState;
@@ -41,18 +42,26 @@ const follow = (props) => {
 	// 	setFollowBtn((prevState) => !prevState);
 	// 	// addFollow(user.id);
 	// };
+	const goToOwnerPage = (name) => {
+		props.history.push(`/${name}`);
+	};
 	if (followList) {
 		const followListComp = followList.map((f) => (
 			<div className={classes.SingleFollow} key={f.displayName}>
 				<div className={classes.FollowDetails}>
-					<img
-						src={f.imgProfile || noProfilePic}
-						alt='user'
-						className={classes.Img}
-					/>
+					<div
+						className={classes.ImgContainer}
+						onClick={() => goToOwnerPage(f.displayName)}
+					>
+						<img
+							src={f.imgProfile || noProfilePic}
+							alt={f.userName}
+							className={classes.Img}
+						/>
+					</div>
 					<div className={classes.UserName}>
-						<h4>{f.userName}</h4>
-						<p>{f.displayName}</p>
+						<h4 onClick={() => goToOwnerPage(f.displayName)}>{f.userName}</h4>
+						<p onClick={() => goToOwnerPage(f.displayName)}>{f.displayName}</p>
 					</div>
 					<OutlineButton className={classes.Button} clicked={follow}>
 						Follow
@@ -72,4 +81,4 @@ const follow = (props) => {
 	}
 };
 
-export default React.memo(follow);
+export default React.memo(withRouter(follow));

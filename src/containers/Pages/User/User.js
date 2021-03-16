@@ -6,7 +6,7 @@ import React, { useState, useEffect, Fragment, useRef } from 'react';
 import classes from './User.css';
 
 import Nav from '../../../components/Nav/Nav';
-import GPost from '../../Posts/GPost/GPost';
+import SinglePost from '../../Posts/SinglePost/SinglePost';
 import AddPost from '../../AddPost/AddPost';
 
 import Icon from '../../../components/UI/Icon/Icon';
@@ -36,17 +36,13 @@ const user = (props) => {
 	const [posts, setPosts] = useState(null);
 	const [lastKey, setLastKey] = useState('');
 	const [nextPosts_loading, setNextPostsLoading] = useState(false);
-
+	console.log(userId);
 	useEffect(() => {
 		db.collection('users')
 			.where('displayName', '==', userId)
 			.get()
 			.then((snapshot) => {
 				snapshot.forEach((doc) => {
-					// const data = new Date(doc.id.metadata.creationTime);
-					// const year = data.getFullYear();
-					// const month = data.toLocaleString('default', { month: 'long' });
-					// const creationDate = `Joined in ${month} ${year}`;
 					db.collection('users')
 						.doc(doc.id)
 						.get()
@@ -56,7 +52,7 @@ const user = (props) => {
 								displayName: res.data().displayName,
 								age: res.data().age,
 								country: res.data().country,
-								// creationTime: creationDate,
+								creationTime: res.data().creationDate,
 								imgPro: res.data().imgProfile,
 								cover: res.data().imgCover,
 							});
@@ -64,7 +60,6 @@ const user = (props) => {
 				});
 			});
 	}, []);
-
 	useEffect(() => {
 		if (userData) {
 			fetchDataNew()
@@ -114,7 +109,7 @@ const user = (props) => {
 
 	if (posts) {
 		const data = posts.map((post) => (
-			<GPost
+			<SinglePost
 				key={`${post.NickName}-${Math.random(20000)}`}
 				name={post.Name}
 				nickname={post.NickName}
@@ -139,7 +134,7 @@ const user = (props) => {
 						style={{ textAlign: 'center', position: 'relative' }}
 						ref={topRef}
 					>
-						<div>
+						<div className={classes.ImgCoverContainer}>
 							<img
 								src={userData.cover ? userData.cover : defCover}
 								alt='cover'

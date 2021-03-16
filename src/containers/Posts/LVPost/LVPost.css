@@ -1,0 +1,120 @@
+/** @format */
+
+.Container {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-column-gap: 2rem;
+	position: relative;
+	max-width: 140rem;
+	margin: 0 auto;
+}
+
+.Main {
+	grid-column: 3/8;
+}
+
+.Onwer {
+	text-align: center;
+	font-size: 1.5rem;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+.Onwer:hover {
+	color: var(--primary-color-dark);
+}
+
+.UserData {
+	display: flex;
+	align-items: center;
+}
+
+.Comment {
+	transition: all 0.2s;
+	background-color: var(--bg);
+	padding: 1.5rem;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-bottom: 0.5rem;
+}
+
+.Comment:hover {
+	background-color: var(--dark-bg);
+}
+
+.ImgContainer {
+	border-radius: 9999px;
+	height: 5rem;
+	width: 5rem;
+	overflow: hidden;
+	display: 'flex';
+	align-items: center;
+	margin-right: 1rem;
+	transition: all 0.2s;
+	cursor: pointer;
+	position: relative;
+}
+
+.Img {
+	width: 100%;
+	height: auto;
+}
+
+.ImgContainer:hover {
+	filter: brightness(0.8);
+}
+
+.UserName {
+	font-size: 1.6rem;
+	font-weight: 500;
+	line-height: 1;
+	transition: all 0.2s;
+}
+
+.UserName:hover {
+	color: var(--primary-color-dark);
+}
+
+.AccountName {
+	cursor: pointer;
+	font-size: 1.4rem;
+	color: var(--light-grey);
+	transition: all 0.2s;
+}
+
+.AccountName:hover {
+	color: var(--dark-grey);
+}
+.Data {
+	display: flex;
+}
+
+.Text {
+	font-size: 1.7rem;
+	color: rgb(61, 61, 61);
+	margin-bottom: 1rem;
+}
+
+.Data {
+	display: flex;
+}
+
+.DataText {
+	margin-right: 2rem;
+	cursor: pointer;
+	transition: all 0.2s;
+	font-size: 1.6rem;
+	color: var(--dark-grey);
+}
+
+.ReactIcon {
+	display: flex;
+	align-items: center;
+}
+
+.ReactText {
+	font-size: 1.3rem;
+	margin-left: -0.8rem;
+	transition: all 0.2s;
+	color: var(--dark-grey);
+	line-height: 1;
+}

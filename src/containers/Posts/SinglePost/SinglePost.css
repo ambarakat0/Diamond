@@ -1,0 +1,195 @@
+/** @format */
+
+.Container {
+	display: grid;
+	grid-row-gap: 1rem;
+	/* grid-template-rows: (4, min-content); */
+	padding: 1.5rem;
+	border-radius: 5px;
+	background-color: var(--bg);
+	margin-bottom: 1rem;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+.Container:hover {
+	background-color: var(--dark-bg);
+}
+
+.ImgContainer {
+	display: 'flex';
+	align-items: center;
+	margin-right: 1rem;
+	border-radius: 9999px;
+	height: 5rem;
+	width: 5rem;
+	overflow: hidden;
+	transition: all 0.2s;
+	cursor: pointer;
+	position: relative;
+}
+
+.Img {
+	width: 100%;
+	height: auto;
+}
+
+.ImgContainer:hover {
+	filter: brightness(0.8);
+}
+
+.First,
+.Second,
+.Fourth,
+.TagsContainer,
+.UserData {
+	display: flex;
+	align-items: center;
+}
+
+.TagsContainer {
+	margin-right: auto;
+}
+
+.Tag {
+	padding: 0.25rem 0.5rem;
+	margin-right: 0.5rem;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	background-color: var(--vlight-grey);
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.Tag:hover,
+.IconContainer:hover {
+	background-color: var(--light-grey);
+}
+
+.TagText {
+	font-size: 1.2rem;
+	font-weight: 300;
+	margin-left: 0.5rem;
+	text-align: center;
+}
+
+.Icon {
+	fill: var(--primary-color);
+	height: 1.5rem;
+	width: 1.5rem;
+}
+
+.UserData {
+	display: flex;
+	margin-right: auto;
+	cursor: pointer;
+}
+
+.UserName {
+	font-size: 1.6rem;
+	font-weight: 500;
+	line-height: 1;
+	transition: all 0.2s;
+}
+
+.UserName:hover {
+	color: var(--primary-color-dark);
+}
+
+.AccountName {
+	cursor: pointer;
+	font-size: 1.4rem;
+	color: var(--light-grey);
+	transition: all 0.2s;
+}
+
+.AccountName:hover {
+	color: var(--dark-grey);
+}
+
+.Data {
+	display: flex;
+}
+
+.DataText {
+	margin-right: 2rem;
+	cursor: pointer;
+	transition: all 0.2s;
+	font-size: 1.6rem;
+	color: var(--dark-grey);
+}
+
+.DataText:hover {
+	color: var(--primary-color);
+}
+
+.Text {
+	font-size: 1.7rem;
+	margin-bottom: 0.5rem;
+}
+
+.Fourth {
+	justify-content: space-between;
+}
+
+.ReactIcon {
+	display: flex;
+	align-items: center;
+}
+
+.ReactText {
+	font-size: 1.3rem;
+	margin-left: -0.8rem;
+	transition: all 0.2s;
+	color: var(--dark-grey);
+	line-height: 1;
+}
+
+.Media {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+	height: 30rem;
+}
+
+.ImgContentContainer {
+	height: 100%;
+	width: 100%;
+	border-radius: 5px;
+	overflow: hidden;
+	cursor: pointer;
+	transition: all 0.2s;
+	border: 2px solid var(--primary-color);
+}
+
+.ImgContentContainer:hover {
+	filter: brightness(0.8);
+	transform: scale(0.98);
+	border: 2px solid var(--primary-color-dark);
+}
+
+.ImgContent {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.Video {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	transition: all 0.2s;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.VideoContent {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.Comment button {
+	width: 40%;
+	margin: 0 auto;
+}

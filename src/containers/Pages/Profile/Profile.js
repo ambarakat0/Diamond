@@ -12,16 +12,18 @@ import React, {
 import classes from './Profile.css';
 
 import Nav from '../../../components/Nav/Nav';
-import GPost from '../../Posts/GPost/GPost';
+import SinglePost from '../../Posts/SinglePost/SinglePost';
 import AddPost from '../../AddPost/AddPost';
 
 import noProfilePic from '../../../assets/images/noprofilepic.png';
 import defCover from '../../../assets/images/defCover.jpg';
 
-import firebase from '../../../components/Firebase/Firebase';
+import { db } from '../../../components/Firebase/Firebase';
 import Icon from '../../../components/UI/Icon/Icon';
+import IconWithTooltip from '../../../components/UI/IconWithTooltip/IconWithTooltip';
 import ButtonOutline from '../../../components/UI/ButtonOutline/ButtonOutline';
 // import Button from '../../../components/UI/Button/Button';
+import TextArea from '../../../components/AddPost/TextArea/TextArea';
 import FlatButton from '../../../components/UI/FlatButton/FlatButton';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 
@@ -42,6 +44,8 @@ const profile = (props) => {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	const [ImgCover, setImgCover] = useState(defCover);
 	const [ImgPro, setImgPro] = useState(noProfilePic);
+	const [bio, setBio] = useState('');
+	const [toggleBio, setToggleBio] = useState(false);
 	const [userData, setUserData] = useState(null);
 	// const [login, setLogin] = useState(false);
 	// const [signup, setSignup] = useState(false);
@@ -49,6 +53,10 @@ const profile = (props) => {
 	const [posts, setPosts] = useState(null);
 	const [lastKey, setLastKey] = useState('');
 	const [nextPosts_loading, setNextPostsLoading] = useState(false);
+
+	useEffect(() => {
+		fetchUserData(user, setUserData);
+	}, [user]);
 
 	useEffect(() => {
 		if (userData) {
@@ -72,14 +80,10 @@ const profile = (props) => {
 	}, [fetchDataNew, userData]);
 
 	useEffect(() => {
-		fetchUserData(user, setUserData);
-	}, [user]);
-
-	useEffect(() => {
 		if (ImgPro !== noProfilePic) {
 			const name = userData.name + '-' + user.uid;
 			uploadData(ImgPro, name).then((url) => {
-				firebase.firestore().collection('users').doc(user.uid).update({
+				db.collection('users').doc(user.uid).update({
 					imgProfile: url,
 				});
 			});
@@ -90,7 +94,7 @@ const profile = (props) => {
 		if (ImgCover !== defCover) {
 			const name = userData.name + '-COVER-' + user.uid;
 			uploadData(ImgCover, name).then((url) => {
-				firebase.firestore().collection('users').doc(user.uid).update({
+				db.collection('users').doc(user.uid).update({
 					imgCover: url,
 				});
 			});
@@ -155,6 +159,14 @@ const profile = (props) => {
 	// 		</Fragment>
 	// 	);
 	// }
+	const onAddBioHandler = () => {
+		db.collection('users').doc(user.uid).set(
+			{
+				bio: bio,
+			},
+			{ merge: true },
+		);
+	};
 
 	const onClickHandler = () => {
 		topRef.current.scrollIntoView({
@@ -162,9 +174,28 @@ const profile = (props) => {
 		});
 	};
 
+	const onOpenBio = () => {
+		setToggleBio((prevState) => !prevState);
+	};
+	const onBioChangeHandler = (e) => {
+		setBio(e.target.value);
+	};
+	let howAreYou = null;
+	if (toggleBio) {
+		howAreYou = (
+			<div>
+				<TextArea
+					value={bio}
+					placeholder='how are ya? :D'
+					changed={onBioChangeHandler}
+				/>
+			</div>
+		);
+	}
+
 	if (posts) {
 		const data = posts.map((post) => (
-			<GPost
+			<SinglePost
 				key={`${post.NickName}-${Math.random(20000)}`}
 				name={post.Name}
 				nickname={post.NickName}
@@ -191,11 +222,13 @@ const profile = (props) => {
 					>
 						<div>
 							<label htmlFor='uploadCoverImg'>
-								<img
-									src={userData.cover ? userData.cover : ImgCover}
-									alt='cover'
-									className={classes.ImgCover}
-								/>
+								<div className={classes.ImgCoverContainer}>
+									<img
+										src={userData.cover ? userData.cover : ImgCover}
+										alt='cover'
+										className={classes.ImgCover}
+									/>
+								</div>
 							</label>
 							<input
 								type='file'
@@ -206,11 +239,13 @@ const profile = (props) => {
 						</div>
 						<div>
 							<label htmlFor='uploadProImg'>
-								<img
-									src={userData.imgPro ? userData.imgPro : ImgPro}
-									alt='profile'
-									className={classes.Img}
-								/>
+								<div className={classes.ImgContainer}>
+									<img
+										src={userData.imgPro ? userData.imgPro : ImgPro}
+										alt='profile'
+										className={classes.Img}
+									/>
+								</div>
 							</label>
 							<input
 								type='file'
@@ -226,7 +261,21 @@ const profile = (props) => {
 								<h2 className={classes.UserName}>{userData.name}</h2>
 								<h3 className={classes.NickName}>{userData.displayName}</h3>
 							</div>
-							<ButtonOutline>Edit profile</ButtonOutline>
+							<ButtonOutline clicked={onAddBioHandler}>
+								Edit profile
+							</ButtonOutline>
+						</div>
+						<div>
+							{userData.bio ? (
+								<p className={classes.Bio}>{userData.bio}</p>
+							) : (
+								<IconWithTooltip
+									iconName='quotes-left'
+									text='Add bio'
+									clicked={onOpenBio}
+								/>
+							)}
+							{howAreYou}
 						</div>
 						<div className={classes.MisData}>
 							<div>

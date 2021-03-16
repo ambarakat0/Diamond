@@ -3,11 +3,9 @@
 import React, { Fragment, useEffect, useState } from 'react';
 
 import SingleTagPage from '../../../components/SingleTagPage/SingleTagPage';
-import GPost from '../../Posts/GPost/GPost';
+import SinglePost from '../../Posts/SinglePost/SinglePost';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { fetchDataNew, fetchDataNextBatch } from '../../../Shared/handleData';
-
-// import { Gposts } from '../../../Data/GPostData';
 
 // import { authStateContext } from '../../../Global/TrackAuthState';
 // import { Redirect } from 'react-router-dom';
@@ -34,6 +32,15 @@ const home = (props) => {
 		};
 	}, [fetchDataNew]);
 
+	// useEffect(() => {
+	// 	fetchDataNew(setData, setLastKey);
+	// 	return () => {
+	// 		setData(null);
+	// 		setLastKey('');
+	// 		setNextPostsLoading(false);
+	// 	};
+	// }, [fetchDataNew]);
+
 	const fetchMorePosts = (key) => {
 		if (key) {
 			setNextPostsLoading(true);
@@ -53,7 +60,7 @@ const home = (props) => {
 
 	if (data) {
 		const posts = data.map((post) => (
-			<GPost
+			<SinglePost
 				key={`${post.NickName}-${Math.random(20000)}`}
 				name={post.Name}
 				nickname={post.NickName}
