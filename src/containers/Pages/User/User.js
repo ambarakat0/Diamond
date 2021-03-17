@@ -36,7 +36,6 @@ const user = (props) => {
 	const [posts, setPosts] = useState(null);
 	const [lastKey, setLastKey] = useState('');
 	const [nextPosts_loading, setNextPostsLoading] = useState(false);
-	console.log(userId);
 	useEffect(() => {
 		db.collection('users')
 			.where('displayName', '==', userId)

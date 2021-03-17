@@ -247,7 +247,7 @@ const lvPost = (props) => {
 		));
 		return (
 			<div className={classes.Container}>
-				<Nav />
+				<Nav style={classes.Nav} />
 				<div className={classes.Main}>
 					<div className={classes.Onwer} onClick={goToOwnerPage}>
 						<h1>{data.nickname}</h1>

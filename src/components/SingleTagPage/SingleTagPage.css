@@ -6,7 +6,7 @@
 	display: grid;
 	grid-template-rows: max-content 1fr;
 	padding: 2rem 0;
-	margin: 2rem auto;
+	margin: 0 auto;
 	position: relative;
 	/* background-color: rgba(235, 235, 235, 0.39); */
 }

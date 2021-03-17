@@ -12,8 +12,11 @@ const nav = (props) => {
 	const onclickLogo = () => {
 		props.history.push('/home');
 	};
+	let c = [classes.Nav];
+	if (props.style) c.push(props.style);
+
 	return (
-		<nav className={classes.Nav}>
+		<nav className={c.join(' ')}>
 			<div className={classes.ImgContainer}>
 				<img
 					onClick={onclickLogo}

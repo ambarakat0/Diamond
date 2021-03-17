@@ -8,7 +8,7 @@ import FlatButton from '../FlatButton/FlatButton';
 import Spinner from '../Spinner/Spinner';
 import classes from './FollowSugg.css';
 
-import firebase from '../../../components/Firebase/Firebase';
+import { db } from '../../../components/Firebase/Firebase';
 
 import { authStateContext } from '../../../Global/TrackAuthState';
 import { withRouter } from 'react-router';
@@ -22,13 +22,20 @@ const follow = (props) => {
 		if (user) {
 			let arr = [];
 			const asy = async () => {
-				await firebase
-					.firestore()
+				const UserFollowerList = await db
+					.collection('users')
+					.doc(user.uid)
+					.get()
+					.then((res) => {
+						return [...res.data().followers];
+					});
+				await db
 					.collection('users')
 					.get()
 					.then((snapshot) =>
 						snapshot.docs.forEach((doc) => {
-							if (doc.id !== user.uid) arr.push(doc.data());
+							if (doc.id !== user.uid && !UserFollowerList.includes(doc.id))
+								arr.push(doc.data());
 						}),
 					);
 
@@ -38,10 +45,37 @@ const follow = (props) => {
 		}
 	}, [user]);
 
-	// const follow = () => {
-	// 	setFollowBtn((prevState) => !prevState);
-	// 	// addFollow(user.id);
-	// };
+	const follow = async (id) => {
+		const followers = await db
+			.collection('users')
+			.doc(user.uid)
+			.get()
+			.then((doc) => {
+				if (doc.data().followers) return [...doc.data().followers];
+				else return [];
+			});
+		if (followers.includes(id)) {
+			return;
+		} else {
+			const newFollowers = [...followers, id];
+			await db
+				.collection('users')
+				.doc(user.uid)
+				.set({ followers: newFollowers }, { merge: true });
+			const followings = await db
+				.collection('users')
+				.doc(id)
+				.get()
+				.then((doc) => {
+					if (doc.data().followings) return [...doc.data().followings];
+					else return [];
+				});
+			const newFollowerings = [...followings, user.uid];
+			db.collection('users')
+				.doc(id)
+				.set({ followings: newFollowerings }, { merge: true });
+		}
+	};
 	const goToOwnerPage = (name) => {
 		props.history.push(`/${name}`);
 	};
@@ -63,7 +97,10 @@ const follow = (props) => {
 						<h4 onClick={() => goToOwnerPage(f.displayName)}>{f.userName}</h4>
 						<p onClick={() => goToOwnerPage(f.displayName)}>{f.displayName}</p>
 					</div>
-					<OutlineButton className={classes.Button} clicked={follow}>
+					<OutlineButton
+						className={classes.Button}
+						clicked={() => follow(f.id)}
+					>
 						Follow
 					</OutlineButton>
 				</div>

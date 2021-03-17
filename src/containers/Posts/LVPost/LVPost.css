@@ -6,7 +6,7 @@
 	grid-column-gap: 2rem;
 	position: relative;
 	max-width: 140rem;
-	margin: 0 auto;
+	margin: 2rem auto;
 }
 
 .Main {
@@ -117,4 +117,8 @@
 	transition: all 0.2s;
 	color: var(--dark-grey);
 	line-height: 1;
+}
+
+.Nav {
+	height: 95vh;
 }

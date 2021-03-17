@@ -170,3 +170,7 @@
 .PopupBtnsContainer button {
 	font-size: 1.5rem;
 }
+
+.Nav {
+	height: 95vh;
+}

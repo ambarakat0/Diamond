@@ -15,6 +15,9 @@ export const signUpReq = async (userData, dispatch) => {
 					age: userData.age,
 					country: userData.country,
 					creationDate: userData.data,
+					id: res.user.uid,
+					followers: [],
+					followings: [],
 				});
 			})
 			.then((res) => {

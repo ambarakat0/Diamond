@@ -159,13 +159,17 @@ const profile = (props) => {
 	// 		</Fragment>
 	// 	);
 	// }
-	const onAddBioHandler = () => {
-		db.collection('users').doc(user.uid).set(
-			{
-				bio: bio,
-			},
-			{ merge: true },
-		);
+	const onAddBioHandler = async () => {
+		if (bio) {
+			await db.collection('users').doc(user.uid).set(
+				{
+					bio: bio,
+				},
+				{ merge: true },
+			);
+			setBio('');
+			setToggleBio(false);
+		}
 	};
 
 	const onClickHandler = () => {
@@ -214,7 +218,7 @@ const profile = (props) => {
 		));
 		return (
 			<div className={classes.Container}>
-				<Nav />
+				<Nav style={classes.Nav} />
 				<div className={classes.Main}>
 					<div
 						style={{ textAlign: 'center', position: 'relative' }}
@@ -261,19 +265,24 @@ const profile = (props) => {
 								<h2 className={classes.UserName}>{userData.name}</h2>
 								<h3 className={classes.NickName}>{userData.displayName}</h3>
 							</div>
-							<ButtonOutline clicked={onAddBioHandler}>
-								Edit profile
-							</ButtonOutline>
+							<ButtonOutline>Edit profile</ButtonOutline>
 						</div>
 						<div>
 							{userData.bio ? (
 								<p className={classes.Bio}>{userData.bio}</p>
 							) : (
-								<IconWithTooltip
-									iconName='quotes-left'
-									text='Add bio'
-									clicked={onOpenBio}
-								/>
+								<div>
+									<IconWithTooltip
+										iconName='quotes-left'
+										text='open bio'
+										clicked={onOpenBio}
+									/>
+									<IconWithTooltip
+										iconName='checkmark'
+										text='Add bio'
+										clicked={onAddBioHandler}
+									/>
+								</div>
 							)}
 							{howAreYou}
 						</div>
@@ -297,6 +306,19 @@ const profile = (props) => {
 								<p className={classes.Country}>{userData.country}</p>
 							</div>
 						</div>
+						<div className={classes.MisData}>
+							<div style={{ cursor: 'pointer' }}>
+								<p className={classes.CreationTime}>
+									Followers {userData.followers ? userData.followers.length : 0}
+								</p>
+							</div>
+							<div style={{ cursor: 'pointer' }}>
+								<p className={classes.CreationTime}>
+									Followings{' '}
+									{userData.followings ? userData.followings.length : 0}
+								</p>
+							</div>
+						</div>
 					</div>
 					<AddPost />
 					{data}
@@ -312,20 +334,11 @@ const profile = (props) => {
 		);
 	} else
 		return (
-			<Fragment>
-				<div className={classes.Container}>
-					<Nav />
-					<div
-						style={{
-							display: 'flex',
-							justifyContent: 'space-between',
-							justifySelf: 'center',
-						}}
-					>
-						<Spinner />
-					</div>
-				</div>
-			</Fragment>
+			<div
+				style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}
+			>
+				<Spinner />
+			</div>
 		);
 };
 

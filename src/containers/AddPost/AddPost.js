@@ -13,7 +13,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 
 import noProfilePic from '../../assets/images/noprofilepic.png';
 
-import firebase from '../../components/Firebase/Firebase';
+import firebase, { db } from '../../components/Firebase/Firebase';
 
 import { authStateContext } from '../../Global/TrackAuthState';
 
@@ -46,9 +46,7 @@ const home = React.memo((props) => {
 	// Fetched data from server
 	useEffect(() => {
 		if (user) {
-			firebase
-				.firestore()
-				.collection('users')
+			db.collection('users')
 				.doc(user.uid)
 				.get()
 				.then((res) => {
@@ -83,9 +81,7 @@ const home = React.memo((props) => {
 			Like: [],
 			Share: [],
 		};
-		firebase
-			.firestore()
-			.collection('Posts')
+		db.collection('Posts')
 			.add(p)
 			.then(() => {
 				setShowSpinner(false);
@@ -93,9 +89,7 @@ const home = React.memo((props) => {
 				setToggleAddPostBox(false);
 				setImgContent(null);
 			});
-		firebase
-			.firestore()
-			.collection('users')
+		db.collection('users')
 			.doc(user.uid)
 			.collection('posts')
 			.add(p)

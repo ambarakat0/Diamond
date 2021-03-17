@@ -76,6 +76,8 @@ export const fetchUserData = (user, setUserData) => {
 						imgPro: res.data().imgProfile,
 						cover: res.data().imgCover,
 						bio: res.data().bio,
+						followers: res.data().followers,
+						followings: res.data().followings,
 					});
 				});
 		} catch (err) {

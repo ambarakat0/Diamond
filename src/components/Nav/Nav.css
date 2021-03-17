@@ -8,7 +8,7 @@
 	grid-template-rows: repeat(3, min-content);
 	grid-row-gap: 2rem;
 	justify-items: start;
-	height: 85vh;
+	height: 88vh;
 	position: sticky;
 	top: 5%;
 }
