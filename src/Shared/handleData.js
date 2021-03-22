@@ -6,22 +6,42 @@ import { db } from '../components/Firebase/Firebase';
 import { createData } from './utility';
 
 export const fetchDataNew = async () => {
-	try {
-		const data = await db
-			.collection('Posts')
-			.orderBy('Time', 'desc')
-			.limit(5)
-			.get();
-		let lastKey = '';
-		let posts = [];
-		data.forEach((doc) => {
-			posts.push(doc.data());
-			lastKey = doc.data().Time;
-		});
-		return { posts, lastKey };
-	} catch (err) {
-		console.log('false');
-	}
+   try {
+      const data = await db
+         .collection('Posts')
+         .orderBy('Time', 'desc')
+         .limit(5)
+         .get();
+      let lastKey = '';
+      let posts = [];
+      data.forEach((doc) => {
+         posts.push(doc.data());
+         lastKey = doc.data().Time;
+      });
+      return { posts, lastKey };
+   } catch (err) {
+      console.log('false');
+   }
+};
+export const fetchBookmarks = async (userId) => {
+   try {
+      const data = await db
+         .collection('users')
+         .doc(userId)
+         .collection('bookmark')
+         // .orderBy('Time', 'desc')
+         // .limit(5)
+         .get();
+      let lastKey = '';
+      let posts = [];
+      data.forEach((doc) => {
+         posts.push(doc.data());
+         lastKey = doc.data().Time;
+      });
+      return { posts, lastKey };
+   } catch (err) {
+      console.log('false');
+   }
 };
 // export const fetchDataNew = (setData, setLastKey) => {
 // 	try {
@@ -43,57 +63,57 @@ export const fetchDataNew = async () => {
 // 	}
 // };
 export const fetchDataNextBatch = async (key) => {
-	try {
-		const data = await db
-			.collection('Posts')
-			.orderBy('Time', 'desc')
-			.startAfter(key)
-			.limit(5)
-			.get();
-		let lastKey = '';
-		let posts = [];
-		data.forEach((doc) => {
-			posts.push(doc.data());
-			lastKey = doc.data().Time;
-		});
-		return { posts, lastKey };
-	} catch (err) {}
+   try {
+      const data = await db
+         .collection('Posts')
+         .orderBy('Time', 'desc')
+         .startAfter(key)
+         .limit(5)
+         .get();
+      let lastKey = '';
+      let posts = [];
+      data.forEach((doc) => {
+         posts.push(doc.data());
+         lastKey = doc.data().Time;
+      });
+      return { posts, lastKey };
+   } catch (err) {}
 };
 
 export const fetchUserData = (user, setUserData) => {
-	if (user) {
-		try {
-			const creationDate = createData(user.metadata.creationTime);
-			db.collection('users')
-				.doc(user.uid)
-				.onSnapshot((res) => {
-					setUserData({
-						name: res.data().userName,
-						displayName: res.data().displayName,
-						age: res.data().age,
-						country: res.data().country,
-						creationTime: creationDate,
-						imgPro: res.data().imgProfile,
-						cover: res.data().imgCover,
-						bio: res.data().bio,
-						followers: res.data().followers,
-						followings: res.data().followings,
-					});
-				});
-		} catch (err) {
-			console.log(err.message);
-		}
-	}
+   if (user) {
+      try {
+         const creationDate = createData(user.metadata.creationTime);
+         db.collection('users')
+            .doc(user.uid)
+            .onSnapshot((res) => {
+               setUserData({
+                  name: res.data().userName,
+                  displayName: res.data().displayName,
+                  age: res.data().age,
+                  country: res.data().country,
+                  creationTime: creationDate,
+                  imgPro: res.data().imgProfile,
+                  cover: res.data().imgCover,
+                  bio: res.data().bio,
+                  followers: res.data().followers,
+                  followings: res.data().followings,
+               });
+            });
+      } catch (err) {
+         console.log(err.message);
+      }
+   }
 };
 
 export const uploadData = async (data, name) => {
-	const img = data;
-	const n = name;
-	const metadata = {
-		contentType: img.type,
-	};
-	const ref = firebase.storage().ref();
+   const img = data;
+   const n = name;
+   const metadata = {
+      contentType: img.type,
+   };
+   const ref = firebase.storage().ref();
 
-	const task = ref.child(n).put(img, metadata);
-	return task.then((snapshot) => snapshot.ref.getDownloadURL());
+   const task = ref.child(n).put(img, metadata);
+   return task.then((snapshot) => snapshot.ref.getDownloadURL());
 };

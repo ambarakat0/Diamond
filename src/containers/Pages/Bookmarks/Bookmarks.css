@@ -1,0 +1,27 @@
+.TitleContainer {
+   text-align: center;
+   margin-bottom: 1rem;
+}
+
+.Title {
+   font-size: 3rem;
+   color: rgb(71, 71, 71);
+}
+
+.Remain {
+   font-size: 1.5rem;
+   color: var(--primary-color-dark);
+}
+
+.Container {
+   grid-row: 2/3;
+   grid-column: 1/-1;
+   display: grid;
+   grid-template-columns: repeat(10, 1fr);
+   grid-column-gap: 2rem;
+   position: relative;
+}
+
+.Main {
+   grid-column: 3/8;
+}

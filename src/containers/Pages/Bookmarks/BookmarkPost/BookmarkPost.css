@@ -1,0 +1,74 @@
+.Container {
+   display: grid;
+   grid-row-gap: 1rem;
+   padding: 1.5rem;
+   border-radius: 5px;
+   background-color: var(--bg);
+   margin-bottom: 1rem;
+   cursor: pointer;
+   transition: all 0.2s;
+}
+
+.Container:hover {
+   background-color: var(--dark-bg);
+}
+
+.ImgContainer {
+   display: 'flex';
+   align-items: center;
+   margin-right: 1rem;
+   border-radius: 9999px;
+   height: 5rem;
+   width: 5rem;
+   overflow: hidden;
+   transition: all 0.2s;
+   cursor: pointer;
+   position: relative;
+}
+
+.Img {
+   width: 100%;
+   height: auto;
+}
+
+.ImgContainer:hover {
+   filter: brightness(0.8);
+}
+
+.FirstRow {
+   display: flex;
+   justify-content: space-between;
+}
+
+.UserData {
+   display: flex;
+   margin-right: auto;
+   cursor: pointer;
+}
+
+.UserName {
+   font-size: 1.6rem;
+   font-weight: 500;
+   line-height: 1;
+   transition: all 0.2s;
+}
+
+.UserName:hover {
+   color: var(--primary-color-dark);
+}
+
+.AccountName {
+   cursor: pointer;
+   font-size: 1.4rem;
+   color: var(--light-grey);
+   transition: all 0.2s;
+}
+
+.AccountName:hover {
+   color: var(--dark-grey);
+}
+
+.Text {
+   font-size: 1.7rem;
+   margin-bottom: 0.5rem;
+}
